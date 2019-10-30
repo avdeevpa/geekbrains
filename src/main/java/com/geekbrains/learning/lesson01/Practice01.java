@@ -1,6 +1,4 @@
-package Lesson01;
-
-import java.util.Arrays;
+package com.geekbrains.learning.lesson01;
 
 public class Practice01 {
     public static void main(String[] args) {
@@ -33,7 +31,7 @@ public class Practice01 {
     // Case_04
     public static int sumOfArray(int[] arr) {
         int sum = 0;
-        for (int n: arr){
+        for (int n : arr) {
             sum += n;
         }
         return sum;
@@ -41,18 +39,18 @@ public class Practice01 {
 
     // Case_05
     // For test: System.out.println(Arrays.toString(makeArr(8,3)));
-    public static int[] makeArr(int size, int step){
+    public static int[] makeArr(int size, int step) {
         int[] arr = new int[size];
         arr[0] = 1;
         for (int i = 1; i < size; i++) {
-            arr[i] = arr[i-1] + step;
+            arr[i] = arr[i - 1] + step;
         }
         return arr;
     }
 
     // Case_06
     // For test: printMatrix(makeDiagMatrix(5));
-    public static int[][] makeDiagMatrix(int size){
+    public static int[][] makeDiagMatrix(int size) {
         int[][] arr = new int[size][size];
         for (int i = 0; i < size; i++) {
             arr[i][i] = 1;
@@ -62,8 +60,8 @@ public class Practice01 {
 
     // Case_06_1:
     public static void printMatrix(int[][] arr) {
-        for (int[] line: arr){
-            for (int rec: line) {
+        for (int[] line : arr) {
+            for (int rec : line) {
                 System.out.print(rec + " ");
             }
             System.out.println();
@@ -72,9 +70,13 @@ public class Practice01 {
 
     // Case_07
     public static int maxOfArr(int[] arr) {
-        int[] tmp = arr.clone();
-        Arrays.sort(tmp);
-        return tmp[tmp.length - 1];
+        int max = arr[0];
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i] > max) {
+                max = arr[i];
+            }
+        }
+        return max;
     }
 
 }
