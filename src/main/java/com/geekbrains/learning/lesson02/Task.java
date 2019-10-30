@@ -12,7 +12,6 @@ public class Task {
         this.id = id;
         this.caption = caption;
         this.owner = owner;
-        this.assigned = assigned;
         this.description = description;
     }
 
@@ -38,10 +37,10 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Id: [" + this.id + "]" + "\tTask: [" + this.caption + "]" + "\tOwner: [" + owner + "]" +
-                ((this.assigned != null) ? "\tAssigned: [" + this.assigned + "]" : "") +
-                ((this.status != null) ? "\t Status: [" + this.status + "]" : "") +
-                "\t Description: [" + this.description + "]";
+        return "Id: [" + id + "]" + "\tЗадача: [" + caption + "]" + "\tВладелец: [" + owner + "]" +
+                ((assigned != null) ? "\tНазначено: [" + assigned + "]" : "") +
+                ((status != null) ? "\tСтатус: [" + status + "]" : "") +
+                "\tОписание: [" + description + "]";
     }
 
 }

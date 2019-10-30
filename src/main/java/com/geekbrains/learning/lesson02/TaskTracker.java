@@ -6,16 +6,12 @@ public class TaskTracker {
 
     public void addTask(Task task) {
         for (int i = 0; i < TASK_LIMIT; i++) {
-            if (tasks[i] == task) {
-                System.out.println("Task already exists");
-                return;
-            }
             if (tasks[i] == null) {
                 tasks[i] = task;
                 return;
             }
         }
-        System.out.println("ERROR: Task limit " + TASK_LIMIT + " tasks reached.");
+        System.out.println("Список задач заполнен");
     }
 
     public void printTasks() {
@@ -24,23 +20,22 @@ public class TaskTracker {
                 System.out.println(tasks[i].toString());
             }
         }
-        System.out.println("=== Конец списка ===");
     }
 
-    public void deleteTask(int id){
+    public void deleteTask(int id) {
         for (int i = 0; i < TASK_LIMIT; i++) {
-            if(tasks[i] != null) {
-                if(tasks[i].getId() == id){
+            if (tasks[i] != null) {
+                if (tasks[i].getId() == id) {
                     tasks[i] = null;
                 }
             }
         }
     }
 
-    public void deleteTask(String caption){
+    public void deleteTask(String caption) {
         for (int i = 0; i < TASK_LIMIT; i++) {
-            if(tasks[i] != null) {
-                if(tasks[i].getCaption() == caption){
+            if (tasks[i] != null) {
+                if (tasks[i].getCaption().equals(caption)) {
                     tasks[i] = null;
                 }
             }
