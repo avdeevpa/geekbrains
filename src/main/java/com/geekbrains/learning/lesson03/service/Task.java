@@ -35,6 +35,10 @@ public class Task {
         }
     }
 
+    public Status getStatus(Task task){
+        return status;
+    }
+
     public void setStatus(Status status) {
         this.status = status;
     }
@@ -43,7 +47,7 @@ public class Task {
         return id;
     }
 
-    protected void setId(Long id) {
+    void setId(Long id) {
         this.id = id;
     }
 

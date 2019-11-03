@@ -19,19 +19,6 @@ public class TaskRepository implements TaskInterface {
     }
 
     @Override
-    public long editTask(Task task) {
-        for (Task tsk : tasks) {
-            if (tsk != null) {
-                if (tsk.getId().equals(task.getId())) {
-                    task = tsk;
-                    return task.getId();
-                }
-            }
-        }
-        return -1;
-    }
-
-    @Override
     public Task getTask(Long id) {
         for (Task task : tasks) {
             if (task != null && task.getId().equals(id)) {
