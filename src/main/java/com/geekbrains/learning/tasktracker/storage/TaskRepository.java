@@ -1,4 +1,4 @@
-package com.geekbrains.learning.lesson03.service;
+package com.geekbrains.learning.tasktracker.storage;
 
 public class TaskRepository implements TaskInterface {
     private final int TASK_LIMIT = 10;

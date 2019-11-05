@@ -1,8 +1,8 @@
-package com.geekbrains.learning.lesson03;
+package com.geekbrains.learning.tasktracker;
 
-import com.geekbrains.learning.lesson03.service.Task;
-import com.geekbrains.learning.lesson03.service.TaskInterface;
-import com.geekbrains.learning.lesson03.service.TaskRepository;
+import com.geekbrains.learning.tasktracker.storage.Task;
+import com.geekbrains.learning.tasktracker.storage.TaskInterface;
+import com.geekbrains.learning.tasktracker.storage.TaskRepository;
 
 class TaskService {
     private TaskInterface storage = new TaskRepository();

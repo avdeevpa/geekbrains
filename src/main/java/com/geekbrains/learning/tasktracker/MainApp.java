@@ -1,6 +1,6 @@
-package com.geekbrains.learning.lesson03;
+package com.geekbrains.learning.tasktracker;
 
-import com.geekbrains.learning.lesson03.service.Task;
+import com.geekbrains.learning.tasktracker.storage.Task;
 
 public class MainApp {
     public static void main(String[] args) {

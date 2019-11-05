@@ -1,4 +1,4 @@
-package com.geekbrains.learning.lesson03.service;
+package com.geekbrains.learning.tasktracker.storage;
 
 public interface TaskInterface {
     long addTask(Task task);
