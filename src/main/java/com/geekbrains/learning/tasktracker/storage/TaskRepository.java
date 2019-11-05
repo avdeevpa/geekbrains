@@ -2,7 +2,7 @@ package com.geekbrains.learning.tasktracker.storage;
 
 import com.geekbrains.learning.tasktracker.exceptions.TTStorageException;
 
-public class TaskRepository implements TaskInterface{
+public class TaskRepository implements TaskInterface {
     private final int TASK_LIMIT = 10;
     private Task[] tasks = new Task[TASK_LIMIT];
 
@@ -37,7 +37,7 @@ public class TaskRepository implements TaskInterface{
     public void deleteTask(Long id) {
         for (int i = 0; i < TASK_LIMIT; i++) {
             if (tasks[i] != null) {
-                if (tasks[i].getId().equals(id) ) {
+                if (tasks[i].getId().equals(id)) {
                     tasks[i] = null;
                 }
             }
