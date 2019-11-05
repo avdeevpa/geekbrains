@@ -1,5 +1,8 @@
 package com.geekbrains.learning.tasktracker.storage;
 
+import com.geekbrains.learning.tasktracker.exceptions.TTException;
+import com.geekbrains.learning.tasktracker.exceptions.TTStorageException;
+
 public class Task {
     public enum Status {
         CREATED, ASSIGNED, INPROGRESS, COMPLETED, REJECTED
@@ -28,10 +31,8 @@ public class Task {
     }
 
     public void assign(String assigned) {
-        if (this.assigned == null) {
-            this.assigned = assigned;
-        } else {
-            System.out.println("Задача уже назначена!");
+        if (this.assigned != null) {
+            throw new TTStorageException("Задача уже назначена!");
         }
     }
 

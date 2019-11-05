@@ -1,7 +1,9 @@
 package com.geekbrains.learning.tasktracker.storage;
 
+import com.geekbrains.learning.tasktracker.exceptions.TTException;
+
 public interface TaskInterface {
-    long addTask(Task task);
+    Task addTask(Task task);
     Task getTask(Long id);
     Task[] getTasks();
     void deleteTask(Long id);

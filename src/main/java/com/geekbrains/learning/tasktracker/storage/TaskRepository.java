@@ -1,21 +1,24 @@
 package com.geekbrains.learning.tasktracker.storage;
 
-public class TaskRepository implements TaskInterface {
+import com.geekbrains.learning.tasktracker.exceptions.TTStorageException;
+
+public class TaskRepository implements TaskInterface{
     private final int TASK_LIMIT = 10;
     private Task[] tasks = new Task[TASK_LIMIT];
 
     @Override
-    public long addTask(Task task) {
+    public Task addTask(Task task) {
         for (int i = 0; i < TASK_LIMIT; i++) {
+            // TODO: Переделать работу с id
             if (tasks[i] == null) {
                 if (task.getId() == null) {
                     task.setId((long) i);
                 }
                 tasks[i] = task;
-                return i;
+                return task;
             }
         }
-        return -1;
+        throw new TTStorageException("Хранилище задач заполнено");
     }
 
     @Override
