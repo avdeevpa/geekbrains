@@ -30,7 +30,7 @@ public class Task {
         this.status = Status.CREATED;
     }
 
-    public void assign(String assigned) {
+    public void assign(String assigned) throws TTStorageException{
         if (this.assigned != null) {
             throw new TTStorageException("Задача уже назначена!");
         }

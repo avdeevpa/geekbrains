@@ -1,17 +1,24 @@
 package com.geekbrains.learning.tasktracker;
 
+import com.geekbrains.learning.tasktracker.exceptions.TTStorageException;
 import com.geekbrains.learning.tasktracker.storage.Task;
 import com.geekbrains.learning.tasktracker.storage.TaskInterface;
 import com.geekbrains.learning.tasktracker.storage.TaskRepository;
 
 class TaskService {
-    private TaskInterface storage = new TaskRepository();
+    private TaskInterface storage;
+
+    public TaskService(TaskInterface storage) {
+        this.storage = storage;
+    }
 
     void addToTasks(Task task) {
-        long result = storage.addTask(task);
-        System.out.println(
-                result < 0 ? "Список задач заполнен" : String.format("Задача %d добавлена.", result)
-        );
+        try {
+            Task result = storage.addTask(task);
+            System.out.println(String.format("Задача с Id:%d добавлена.", result.getId()));
+        } catch (TTStorageException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     void printTasks() {
@@ -26,7 +33,7 @@ class TaskService {
         try {
             Long id = Long.parseLong(idents);
             storage.deleteTask(id);
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             storage.deleteTask(idents);
         }
     }

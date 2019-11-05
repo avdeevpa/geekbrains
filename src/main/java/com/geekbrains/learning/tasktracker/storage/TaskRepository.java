@@ -7,13 +7,10 @@ public class TaskRepository implements TaskInterface{
     private Task[] tasks = new Task[TASK_LIMIT];
 
     @Override
-    public Task addTask(Task task) {
+    public Task addTask(Task task) throws TTStorageException {
         for (int i = 0; i < TASK_LIMIT; i++) {
-            // TODO: Переделать работу с id
             if (tasks[i] == null) {
-                if (task.getId() == null) {
-                    task.setId((long) i);
-                }
+                task.setId((long) i); // Package-private setter
                 tasks[i] = task;
                 return task;
             }
