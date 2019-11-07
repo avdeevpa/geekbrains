@@ -4,8 +4,8 @@ import com.geekbrains.learning.tasktracker.exceptions.TTStorageException;
 
 public interface TaskInterface {
     Task addTask(Task task) throws TTStorageException;
-    Task getTask(Long id);
+    Task getTask(Long id) throws TTStorageException;
     Task[] getTasks();
-    void deleteTask(Long id);
-    void deleteTask(String caption);
+    void deleteTask(Long id) throws TTStorageException;
+    void deleteTask(String caption) throws TTStorageException;
 }

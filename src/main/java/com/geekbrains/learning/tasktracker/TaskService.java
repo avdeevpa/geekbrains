@@ -32,14 +32,27 @@ class TaskService {
     void deleteTask(String idents) {
         try {
             Long id = Long.parseLong(idents);
-            storage.deleteTask(id);
+            try {
+                storage.deleteTask(id);
+            } catch (TTStorageException e) {
+                System.out.println(e.getMessage());
+            }
         } catch (NumberFormatException e) {
-            storage.deleteTask(idents);
+            try {
+                storage.deleteTask(idents);
+            } catch (TTStorageException ex) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
-    Task getTaskById(Long id) {
-        return storage.getTask(id);
+    Task getTaskById(Long id){
+        try {
+            return storage.getTask(id);
+        } catch (TTStorageException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
 }
