@@ -9,20 +9,22 @@ public class MainApp {
     public static void main(String[] args) {
         //TaskService tracker = new TaskService(new TaskRepository());
         TaskService tracker = new TaskService(new TaskListRepository());
-        tracker.addToTasks(new Task("Задача 1", "Тестер", "Переполнение списка"));
-        tracker.addToTasks(new Task("Задача 2", "Тестер", "Переполнение списка"));
-        tracker.addToTasks(new Task("Задача", "Тестер", "Переполнение списка"));
+        tracker.addEdtTasks(new Task("Задача 1", "Тестер", "Переполнение списка"));
+        tracker.addEdtTasks(new Task("Задача 2", "Тестер", "Переполнение списка"));
+        tracker.addEdtTasks(new Task("Задача", "Тестер", "Переполнение списка"));
         tracker.printTasks();
-        tracker.deleteTask("0");
+        tracker.deleteTask("2");
         tracker.deleteTask("Задача");
         System.out.println("======");
         tracker.printTasks();
         System.out.println("-----");
         try {
-            tracker.getTaskById(1L).assign("Некто");
+            Task editableTask = tracker.getTaskById(1L);
+            editableTask.assign("Некто");
+            tracker.addEdtTasks(editableTask);
         } catch (TTStorageException e) {
-            e.printStackTrace();
+            System.out.println("Не удалось назначить задачу: " + e.getMessage());
         }
-        System.out.println(tracker.getTaskById(1L));
+        tracker.printTasks();
     }
 }

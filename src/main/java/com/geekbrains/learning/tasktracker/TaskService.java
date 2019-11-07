@@ -3,7 +3,6 @@ package com.geekbrains.learning.tasktracker;
 import com.geekbrains.learning.tasktracker.exceptions.TTStorageException;
 import com.geekbrains.learning.tasktracker.storage.Task;
 import com.geekbrains.learning.tasktracker.storage.TaskInterface;
-import com.geekbrains.learning.tasktracker.storage.TaskRepository;
 
 class TaskService {
     private TaskInterface storage;
@@ -12,10 +11,10 @@ class TaskService {
         this.storage = storage;
     }
 
-    void addToTasks(Task task) {
+    void addEdtTasks(Task task) {
         try {
-            Task result = storage.addTask(task);
-            System.out.println(String.format("Задача с Id:%d добавлена.", result.getId()));
+            Task result = storage.addEdtTask(task);
+            System.out.println(String.format("Задача с Id:%d добавлена/обновлена.", result.getId()));
         } catch (TTStorageException e) {
             System.out.println(e.getMessage());
         }
@@ -41,18 +40,13 @@ class TaskService {
             try {
                 storage.deleteTask(idents);
             } catch (TTStorageException ex) {
-                System.out.println(e.getMessage());
+                System.out.println(ex.getMessage());
             }
         }
     }
 
-    Task getTaskById(Long id){
-        try {
-            return storage.getTask(id);
-        } catch (TTStorageException e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
+    Task getTaskById(Long id) throws TTStorageException {
+        return storage.getTask(id);
     }
 
 }

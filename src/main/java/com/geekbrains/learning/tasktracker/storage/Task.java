@@ -34,6 +34,7 @@ public class Task {
         if (this.assigned != null) {
             throw new TTStorageException("Задача уже назначена!");
         }
+        this.assigned = assigned;
     }
 
     public Status getStatus(Task task) {
