@@ -59,7 +59,7 @@ public class Task {
     @Override
     public String toString() {
         return String.format(
-                "Task [Id: \"%d\", Caption: \"%s\", Owner: \"%s\", Assigned: \"%s\", Status: %s, Description: \"%s\"",
+                "Task [Id: \"%d\", Caption: \"%s\", Owner: \"%s\", Assigned: \"%s\", Status: %s, Description: \"%s\"]",
                 id, caption, owner, assigned, status, description);
     }
 
