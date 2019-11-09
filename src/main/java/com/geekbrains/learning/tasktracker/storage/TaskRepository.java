@@ -2,6 +2,9 @@ package com.geekbrains.learning.tasktracker.storage;
 
 import com.geekbrains.learning.tasktracker.exceptions.TTStorageException;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class TaskRepository implements TaskInterface {
     private final int TASK_LIMIT = 10;
     private Task[] tasks = new Task[TASK_LIMIT];
@@ -32,9 +35,7 @@ public class TaskRepository implements TaskInterface {
     }
 
     @Override
-    public Task[] getTasks() {
-        return tasks;
-    }
+    public List<Task> getTasks() { return Arrays.asList(tasks); }
 
     @Override
     public void deleteTask(Long id) {

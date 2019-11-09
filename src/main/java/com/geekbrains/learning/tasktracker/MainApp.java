@@ -12,6 +12,7 @@ public class MainApp {
         tracker.addEdtTasks(new Task("Задача 1", "Тестер", "Переполнение списка"));
         tracker.addEdtTasks(new Task("Задача 2", "Тестер", "Переполнение списка"));
         tracker.addEdtTasks(new Task("Задача", "Тестер", "Переполнение списка"));
+        tracker.addEdtTasks(new Task("Задача", "Тестер", "Переполнение списка"));
         tracker.printTasks();
         tracker.deleteTask("2");
         tracker.deleteTask("Задача");
