@@ -18,7 +18,7 @@ public class Box<T extends Fruit> {
     public float getTotalWeight() {
         float totalWeight = 0f;
         for (T contents : boxList) {
-            totalWeight += contents.getWeight();
+            totalWeight += contents.weight;
         }
         return totalWeight;
     }
@@ -32,7 +32,9 @@ public class Box<T extends Fruit> {
     }
 
     public void repackTo(Box<T> newBox) {
-        newBox.getBoxList().addAll(boxList);
-        boxList.clear();
+        if (newBox != null && newBox != this) {
+            newBox.getBoxList().addAll(boxList);
+            boxList.clear();
+        }
     }
 }
