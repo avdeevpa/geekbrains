@@ -1,4 +1,4 @@
-package com.geekbrains.learning.tasktracker.arrExcersise;
+package com.geekbrains.learning.tasktracker.excersise.arrExcersise;
 
 class ArrClass {
     private static int ARR_SIZE = 4;
