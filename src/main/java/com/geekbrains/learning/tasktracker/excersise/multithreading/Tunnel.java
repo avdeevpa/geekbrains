@@ -1,4 +1,4 @@
-package com.geekbrains.learning.tasktracker.multithreading;
+package com.geekbrains.learning.tasktracker.excersise.multithreading;
 
 public class Tunnel extends Stage {
     public Tunnel() {

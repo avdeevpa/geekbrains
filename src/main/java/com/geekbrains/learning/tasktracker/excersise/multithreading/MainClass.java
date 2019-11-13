@@ -1,4 +1,4 @@
-package com.geekbrains.learning.tasktracker.multithreading;
+package com.geekbrains.learning.tasktracker.excersise.multithreading;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
