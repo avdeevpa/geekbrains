@@ -1,31 +1,58 @@
 package com.geekbrains.learning.tasktracker;
 
-import com.geekbrains.learning.tasktracker.exceptions.TTStorageException;
 import com.geekbrains.learning.tasktracker.storage.Task;
 import com.geekbrains.learning.tasktracker.storage.TaskListRepository;
-import com.geekbrains.learning.tasktracker.storage.TaskRepository;
 
 public class MainApp {
+    static TaskService tracker = new TaskService(new TaskListRepository());;
+
     public static void main(String[] args) {
+        prepareTaskTracker();
+        tracker.printTasks();
+        System.out.println("\n");
+
+        System.out.println(TaskService.listBeautifier(
+                "a. Получение списка задач по выбранному статусу \"" + Task.Status.ASSIGNED.getRussianTitle() + "\"",
+                tracker.getTaskByStatus(Task.Status.ASSIGNED)));
+        System.out.println(
+                "----- b. Проверка наличия задачи с указанным ID -----\n" +
+                tracker.isTaskExists(5L) + "\n");
+        System.out.println(TaskService.listBeautifier(
+                "c. Получение списка задач в отсортированном по статусу виде",
+                tracker.getSortedTaskList()));
+        System.out.println(
+                "----- d. Подсчет количества задач по определенному статусу -----\n" +
+                String.format("Задач в статусе \"%s\" : %d",
+                        Task.Status.ASSIGNED.getRussianTitle(),
+                        tracker.countOfStatus(Task.Status.ASSIGNED)) + "\n" );
+
+    }
+
+    static void prepareTaskTracker(){
+        Task task;
         //TaskService tracker = new TaskService(new TaskRepository());
-        TaskService tracker = new TaskService(new TaskListRepository());
-        tracker.addEdtTasks(new Task("Задача 1", "Тестер", "Переполнение списка"));
-        tracker.addEdtTasks(new Task("Задача 2", "Тестер", "Переполнение списка"));
-        tracker.addEdtTasks(new Task("Задача", "Тестер", "Переполнение списка"));
-        tracker.addEdtTasks(new Task("Задача", "Тестер", "Переполнение списка"));
-        tracker.printTasks();
-        tracker.deleteTask("2");
-        tracker.deleteTask("Задача");
-        System.out.println("======");
-        tracker.printTasks();
-        System.out.println("-----");
-        try {
-            Task editableTask = tracker.getTaskById(1L);
-            editableTask.assign("Некто");
-            tracker.addEdtTasks(editableTask);
-        } catch (TTStorageException e) {
-            System.out.println("Не удалось назначить задачу: " + e.getMessage());
-        }
-        tracker.printTasks();
+        task = new Task("Задача 1", "Алиса", "Описание");
+        tracker.addEdtTasks(task);
+
+        task = new Task("Задача 2", "Боб", "Описание");
+        task.setStatus(Task.Status.ASSIGNED);
+        tracker.addEdtTasks(task);
+
+        task = new Task("Задача 3", "Чарли", "Описание");
+        task.setStatus(Task.Status.ASSIGNED);
+        tracker.addEdtTasks(task);
+
+        task = new Task("Задача 4", "Дейв", "Описание");
+        task.setStatus(Task.Status.INPROGRESS);
+        tracker.addEdtTasks(task);
+
+        task = new Task("Задача 5", "Кэрол", "Описание");
+        task.setStatus(Task.Status.COMPLETED);
+        tracker.addEdtTasks(task);
+
+        task = new Task("Задача 6", "Чак", "Описание");
+        task.setStatus(Task.Status.REJECTED);
+        tracker.addEdtTasks(task);
+
     }
 }

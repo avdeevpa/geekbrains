@@ -1,11 +1,24 @@
 package com.geekbrains.learning.tasktracker.storage;
 
-import com.geekbrains.learning.tasktracker.exceptions.TTException;
 import com.geekbrains.learning.tasktracker.exceptions.TTStorageException;
 
 public class Task {
     public enum Status {
-        CREATED, ASSIGNED, INPROGRESS, COMPLETED, REJECTED
+        CREATED ("Создана", 0),
+        ASSIGNED ("Назначена", 1),
+        INPROGRESS ("В работе", 2),
+        COMPLETED ("Закрыта", 3),
+        REJECTED ("Отклонена", 10);
+        private String russianTitle;
+        private int sortOrder;
+
+        public String getRussianTitle() { return russianTitle; }
+        public int getSortOrder() { return sortOrder; }
+
+        Status(String russianTitle, int sortOrder){
+            this.russianTitle = russianTitle;
+            this.sortOrder = sortOrder;
+        }
     }
 
     private Long id;
@@ -37,7 +50,7 @@ public class Task {
         this.assigned = assigned;
     }
 
-    public Status getStatus(Task task) {
+    public Status getStatus() {
         return status;
     }
 
