@@ -1,14 +1,16 @@
 package com.geekbrains.learning.tasktracker;
 
 import com.geekbrains.learning.tasktracker.exceptions.TTStorageException;
+import com.geekbrains.learning.tasktracker.storage.FileSimpleService;
 import com.geekbrains.learning.tasktracker.storage.Task;
 import com.geekbrains.learning.tasktracker.storage.TaskInterface;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-class TaskService {
+public class TaskService {
     private TaskInterface storage;
 
     public TaskService(TaskInterface storage) {
@@ -90,6 +92,14 @@ class TaskService {
                     .map(Task::toString)
                     .collect(Collectors.joining("\n")) +
                 "\n";
+    }
+
+    void saveRepository(String filename) {
+        FileSimpleService.trackerSave(filename, storage);
+    }
+
+    void restoreRepository(String filename) {
+        storage = FileSimpleService.trackerRestore(filename);
     }
 
 }

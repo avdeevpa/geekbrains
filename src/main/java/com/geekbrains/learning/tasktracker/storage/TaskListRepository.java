@@ -2,11 +2,12 @@ package com.geekbrains.learning.tasktracker.storage;
 
 import com.geekbrains.learning.tasktracker.exceptions.TTStorageException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class TaskListRepository implements TaskInterface {
+public class TaskListRepository implements TaskInterface, Serializable {
     private ArrayList<Task> taskList;
 
     public TaskListRepository() {
