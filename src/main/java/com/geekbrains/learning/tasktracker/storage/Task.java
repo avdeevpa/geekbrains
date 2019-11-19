@@ -2,7 +2,9 @@ package com.geekbrains.learning.tasktracker.storage;
 
 import com.geekbrains.learning.tasktracker.exceptions.TTStorageException;
 
-public class Task {
+import java.io.Serializable;
+
+public class Task   implements Serializable {
     public enum Status {
         CREATED ("Создана", 0),
         ASSIGNED ("Назначена", 1),

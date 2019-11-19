@@ -1,31 +1,35 @@
 package com.geekbrains.learning.tasktracker;
 
-import com.geekbrains.learning.tasktracker.storage.Task;
-import com.geekbrains.learning.tasktracker.storage.TaskListRepository;
+import com.geekbrains.learning.tasktracker.storage.*;
 
 public class MainApp {
     static TaskService tracker = new TaskService(new TaskListRepository());;
 
     public static void main(String[] args) {
         prepareTaskTracker();
+        // Object-oriented style:
+        tracker.saveRepository("Obj.dat");
+        tracker.restoreRepository("Obj.dat");
+        // Monster service:
+        FileService.exportTasks(tracker.getTasks());
+        FileService.importTasks(tracker, true);
         tracker.printTasks();
-        System.out.println("\n");
 
-        System.out.println(TaskService.listBeautifier(
-                "a. Получение списка задач по выбранному статусу \"" + Task.Status.ASSIGNED.getRussianTitle() + "\"",
-                tracker.getTaskByStatus(Task.Status.ASSIGNED)));
-        System.out.println(
-                "----- b. Проверка наличия задачи с указанным ID -----\n" +
-                tracker.isTaskExists(5L) + "\n");
-        System.out.println(TaskService.listBeautifier(
-                "c. Получение списка задач в отсортированном по статусу виде",
-                tracker.getSortedTaskList()));
-        System.out.println(
-                "----- d. Подсчет количества задач по определенному статусу -----\n" +
-                String.format("Задач в статусе \"%s\" : %d",
-                        Task.Status.ASSIGNED.getRussianTitle(),
-                        tracker.countOfStatus(Task.Status.ASSIGNED)) + "\n" );
-
+//        System.out.println("\n");
+//        System.out.println(TaskService.listBeautifier(
+//                "a. Получение списка задач по выбранному статусу \"" + Task.Status.ASSIGNED.getRussianTitle() + "\"",
+//                tracker.getTaskByStatus(Task.Status.ASSIGNED)));
+//        System.out.println(
+//                "----- b. Проверка наличия задачи с указанным ID -----\n" +
+//                tracker.isTaskExists(5L) + "\n");
+//        System.out.println(TaskService.listBeautifier(
+//                "c. Получение списка задач в отсортированном по статусу виде",
+//                tracker.getSortedTaskList()));
+//        System.out.println(
+//                "----- d. Подсчет количества задач по определенному статусу -----\n" +
+//                String.format("Задач в статусе \"%s\" : %d",
+//                        Task.Status.ASSIGNED.getRussianTitle(),
+//                        tracker.countOfStatus(Task.Status.ASSIGNED)) + "\n" );
     }
 
     static void prepareTaskTracker(){
