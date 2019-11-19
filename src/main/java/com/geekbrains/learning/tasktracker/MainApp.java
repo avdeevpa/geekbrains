@@ -1,19 +1,33 @@
 package com.geekbrains.learning.tasktracker;
 
+import com.geekbrains.learning.tasktracker.exceptions.TTStorageException;
 import com.geekbrains.learning.tasktracker.storage.*;
 
 public class MainApp {
-    static TaskService tracker = new TaskService(new TaskListRepository());;
+    //static TaskService tracker = new TaskService(new TaskListRepository());;
+    static TaskService tracker = new TaskService(new TaskDBRepository());;
 
-    public static void main(String[] args) {
-        prepareTaskTracker();
+    public static void main(String[] args) throws TTStorageException {
+        Task task;
+        //TaskService tracker = new TaskService(new TaskRepository());
+//        tracker.deleteTask("1");
+        tracker.deleteTask("Задача");
+//        tracker.addEdtTasks(new Task("Задача 1", "Алиса", "Описание"));
+//        tracker.addEdtTasks(new Task("Задача", "Алиса", "Описание"));
+//        tracker.addEdtTasks(new Task("Задача", "Алиса", "Описание"));
+
+        //System.out.println(tracker.getTaskById(1L));
+        //tracker.printTasks();
+
+
+//        prepareTaskTracker();
         // Object-oriented style:
-        tracker.saveRepository("Obj.dat");
-        tracker.restoreRepository("Obj.dat");
+//        tracker.saveRepository("Obj.dat");
+//        tracker.restoreRepository("Obj.dat");
         // Monster service:
-        FileService.exportTasks(tracker.getTasks());
-        FileService.importTasks(tracker, true);
-        tracker.printTasks();
+//        FileService.exportTasks(tracker.getTasks());
+//        FileService.importTasks(tracker, true);
+//        tracker.printTasks();
 
 //        System.out.println("\n");
 //        System.out.println(TaskService.listBeautifier(
