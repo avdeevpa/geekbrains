@@ -4,46 +4,18 @@ import com.geekbrains.learning.tasktracker.exceptions.TTStorageException;
 import com.geekbrains.learning.tasktracker.storage.*;
 
 public class MainApp {
-    //static TaskService tracker = new TaskService(new TaskListRepository());;
     static TaskService tracker = new TaskService(new TaskDBRepository(true));;
 
     public static void main(String[] args) throws TTStorageException {
-        Task task;
-        //TaskService tracker = new TaskService(new TaskRepository());
-//        tracker.deleteTask("1");
-//        tracker.deleteTask("Задача");
         tracker.addEdtTasks(new Task("Задача 1", "Алиса", "Описание"));
         tracker.addEdtTasks(new Task("Задача", "Алиса", "Описание"));
         tracker.addEdtTasks(new Task("Задача", "Алиса", "Описание"));
+        tracker.addEdtTasks(new Task("Задание", "Алиса", "Описание"));
 
-        //System.out.println(tracker.getTaskById(1L));
-        //tracker.printTasks();
-
-
-//        prepareTaskTracker();
-        // Object-oriented style:
-//        tracker.saveRepository("Obj.dat");
-//        tracker.restoreRepository("Obj.dat");
-        // Monster service:
-//        FileService.exportTasks(tracker.getTasks());
-//        FileService.importTasks(tracker, true);
-//        tracker.printTasks();
-
-//        System.out.println("\n");
-//        System.out.println(TaskService.listBeautifier(
-//                "a. Получение списка задач по выбранному статусу \"" + Task.Status.ASSIGNED.getRussianTitle() + "\"",
-//                tracker.getTaskByStatus(Task.Status.ASSIGNED)));
-//        System.out.println(
-//                "----- b. Проверка наличия задачи с указанным ID -----\n" +
-//                tracker.isTaskExists(5L) + "\n");
-//        System.out.println(TaskService.listBeautifier(
-//                "c. Получение списка задач в отсортированном по статусу виде",
-//                tracker.getSortedTaskList()));
-//        System.out.println(
-//                "----- d. Подсчет количества задач по определенному статусу -----\n" +
-//                String.format("Задач в статусе \"%s\" : %d",
-//                        Task.Status.ASSIGNED.getRussianTitle(),
-//                        tracker.countOfStatus(Task.Status.ASSIGNED)) + "\n" );
+        System.out.println(tracker.getTaskById(1L));
+        tracker.deleteTask("1");
+        tracker.deleteTask("Задача");
+        tracker.printTasks();
     }
 
     static void prepareTaskTracker(){
