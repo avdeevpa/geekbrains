@@ -51,10 +51,7 @@ public class TaskDBRepository implements TaskInterface{
 
     private boolean isTableExists() throws SQLException {
         ResultSet rs = connection.createStatement().executeQuery("SELECT count(*) FROM all_tables WHERE owner=upper('" + Shadow.BASE + "') and table_name = upper('" +Shadow.TAB_PREFIX + "tasks')");
-        if(rs.next() && rs.getInt(1) == 1) {
-            return true;
-        }
-        return false;
+        return rs.next() && rs.getInt(1) == 1;
     }
 
     private void flushDB() throws SQLException {
