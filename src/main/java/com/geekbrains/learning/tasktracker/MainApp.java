@@ -4,18 +4,25 @@ import com.geekbrains.learning.tasktracker.exceptions.TTStorageException;
 import com.geekbrains.learning.tasktracker.storage.*;
 
 public class MainApp {
-    static TaskService tracker = new TaskService(new TaskDBRepository(true));;
+    static TaskService tracker = new TaskService(new TaskHibernateRepository());;
 
     public static void main(String[] args) throws TTStorageException {
         tracker.addEdtTasks(new Task("Задача 1", "Алиса", "Описание"));
-        tracker.addEdtTasks(new Task("Задача", "Алиса", "Описание"));
-        tracker.addEdtTasks(new Task("Задача", "Алиса", "Описание"));
-        tracker.addEdtTasks(new Task("Задание", "Алиса", "Описание"));
-
+        tracker.addEdtTasks(new Task("Задача 1", "Алиса", "Описание"));
+        tracker.addEdtTasks(new Task("Задача 1", "Алиса", "Описание"));
         System.out.println(tracker.getTaskById(1L));
+        System.out.println(tracker.getTasks());
+
         tracker.deleteTask("1");
-        tracker.deleteTask("Задача");
-        tracker.printTasks();
+
+//        tracker.addEdtTasks(new Task("Задача", "Алиса", "Описание"));
+//        tracker.addEdtTasks(new Task("Задача", "Алиса", "Описание"));
+//        tracker.addEdtTasks(new Task("Задание", "Алиса", "Описание"));
+//
+//        System.out.println(tracker.getTaskById(1L));
+//        tracker.deleteTask("1");
+//        tracker.deleteTask("Задача");
+//        tracker.printTasks();
     }
 
     static void prepareTaskTracker(){

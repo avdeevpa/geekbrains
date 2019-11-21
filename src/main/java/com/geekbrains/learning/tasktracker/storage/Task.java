@@ -2,9 +2,12 @@ package com.geekbrains.learning.tasktracker.storage;
 
 import com.geekbrains.learning.tasktracker.exceptions.TTStorageException;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
-public class Task   implements Serializable {
+@Entity
+@Table(name = "tasks")
+public class Task implements Serializable {
     public enum Status {
         CREATED ("Создана", 0),
         ASSIGNED ("Назначена", 1),
@@ -23,12 +26,31 @@ public class Task   implements Serializable {
         }
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_tasks_id")
+    @SequenceGenerator(name = "s_tasks_id", sequenceName = "admin.s_tasks", allocationSize = 1)
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "caption")
     private String caption;
+
+    @Column(name = "owner")
     private String owner;
+
+    @Column(name = "assigned")
     private String assigned;
+
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "status")
+    @Enumerated(javax.persistence.EnumType.STRING)
     private Status status;
+
+    private Task() {
+
+    }
 
     protected Task(Long id, String caption, String owner, String description) {
         this.id = id;
