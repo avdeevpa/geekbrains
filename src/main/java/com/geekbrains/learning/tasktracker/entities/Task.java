@@ -1,41 +1,60 @@
-package com.geekbrains.learning.tasktracker.storage;
+package com.geekbrains.learning.tasktracker.entities;
 
 import com.geekbrains.learning.tasktracker.exceptions.TTStorageException;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
-public class Task   implements Serializable {
+@Entity
+@Table(name = "tasks")
+public class Task implements Serializable {
     public enum Status {
-        CREATED ("Создана", 0),
-        ASSIGNED ("Назначена", 1),
-        INPROGRESS ("В работе", 2),
-        COMPLETED ("Закрыта", 3),
-        REJECTED ("Отклонена", 10);
+        CREATED("Создана", 0),
+        ASSIGNED("Назначена", 1),
+        INPROGRESS("В работе", 2),
+        COMPLETED("Закрыта", 3),
+        REJECTED("Отклонена", 10);
         private String russianTitle;
         private int sortOrder;
 
-        public String getRussianTitle() { return russianTitle; }
-        public int getSortOrder() { return sortOrder; }
+        public String getRussianTitle() {
+            return russianTitle;
+        }
 
-        Status(String russianTitle, int sortOrder){
+        public int getSortOrder() {
+            return sortOrder;
+        }
+
+        Status(String russianTitle, int sortOrder) {
             this.russianTitle = russianTitle;
             this.sortOrder = sortOrder;
         }
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_tasks_id")
+    @SequenceGenerator(name = "s_tasks_id", sequenceName = "s_tasks", allocationSize = 1)
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "caption")
     private String caption;
+
+    @Column(name = "owner")
     private String owner;
+
+    @Column(name = "assigned")
     private String assigned;
+
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "status")
+    @Enumerated(javax.persistence.EnumType.STRING)
     private Status status;
 
-    protected Task(Long id, String caption, String owner, String description) {
-        this.id = id;
-        this.caption = caption;
-        this.owner = owner;
-        this.description = description;
-        this.status = Status.CREATED;
+    private Task() {
+
     }
 
     public Task(String caption, String owner, String description) {
@@ -64,7 +83,7 @@ public class Task   implements Serializable {
         return id;
     }
 
-    void setId(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -72,11 +91,17 @@ public class Task   implements Serializable {
         return caption;
     }
 
-    String getAssigned() { return assigned; }
+    public String getAssigned() {
+        return assigned;
+    }
 
-    String getDescription() { return description; }
+    public String getDescription() {
+        return description;
+    }
 
-    String getOwner() { return owner; }
+    public String getOwner() {
+        return owner;
+    }
 
     @Override
     public String toString() {
