@@ -72,6 +72,12 @@ public class Task   implements Serializable {
         return caption;
     }
 
+    String getAssigned() { return assigned; }
+
+    String getDescription() { return description; }
+
+    String getOwner() { return owner; }
+
     @Override
     public String toString() {
         return String.format(
