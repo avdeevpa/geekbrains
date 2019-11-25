@@ -7,9 +7,9 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="GeekBrains" />
-        <module name="GeekBrains-Java" />
-        <module name="geekbrains" />
         <module name="MavenApp" />
+        <module name="geekbrains" />
+        <module name="GeekBrains-Java" />
       </profile>
     </annotationProcessing>
   </component>
