@@ -1,6 +1,6 @@
-package com.geekbrains.learning.tasktracker.entities;
+package com.geekbrains.tasktracker.entities;
 
-import com.geekbrains.learning.tasktracker.exceptions.TTStorageException;
+import com.geekbrains.tasktracker.exceptions.TTStorageException;
 
 import javax.persistence.*;
 import java.io.Serializable;

@@ -1,7 +1,7 @@
-package com.geekbrains.learning.tasktracker.services;
+package com.geekbrains.tasktracker.services;
 
-import com.geekbrains.learning.tasktracker.entities.Task;
-import com.geekbrains.learning.tasktracker.repositories.TaskRepository;
+import com.geekbrains.tasktracker.entities.Task;
+import com.geekbrains.tasktracker.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

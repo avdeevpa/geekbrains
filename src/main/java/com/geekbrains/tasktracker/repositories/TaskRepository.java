@@ -1,6 +1,6 @@
-package com.geekbrains.learning.tasktracker.repositories;
+package com.geekbrains.tasktracker.repositories;
 
-import com.geekbrains.learning.tasktracker.entities.Task;
+import com.geekbrains.tasktracker.entities.Task;
 
 import java.util.List;
 

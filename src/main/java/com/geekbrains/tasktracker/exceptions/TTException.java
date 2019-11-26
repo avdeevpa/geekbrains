@@ -1,4 +1,4 @@
-package com.geekbrains.learning.tasktracker.exceptions;
+package com.geekbrains.tasktracker.exceptions;
 
 public class TTException extends Exception {
     public TTException(String msg) {
