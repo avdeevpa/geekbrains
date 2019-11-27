@@ -18,7 +18,7 @@ public class MainController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String showHomePage(Model model) {
-        model.addAttribute("tasks", taskService.getTasks());
+        model.addAttribute("tasksByStatus", taskService.countOfAllStatus());
         return "index";
     }
 }

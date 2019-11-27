@@ -1,38 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<th:block th:with="title = 'GeekApp - TaskTracker'">
-
+<th:block th:with="title = 'GeekApp - Главная'">
     <head  th:replace="include/header :: common_header(${title})">
     </head>
-
     <body>
         <div class="content">
-            <div th:insert="include/header :: menu"></div>
+            <div th:insert="include/header :: logo"></div>
             <h1 th:text="${title}"></h1>
-            <br>
-            <h4>Список задач</h4>
-            <table class="task-table">
-                <thead>
-                <tr >
-                    <td>ID</td>
-                    <td>Caption</td>
-                    <td>Owner</td>
-                    <td>Status</td>
-                    <td>Description</td>
-                </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="t : ${tasks}">
-                        <td th:text="${t.id}"></td>
-                        <td th:text="${t.caption}"></td>
-                        <td th:text="${t.owner}"></td>
-                        <td th:text="${t.status}"></td>
-                        <td th:text="${t.description}"></td>
-                        <td th:text="${t.id}"></td>
-                    </tr>
-                </tbody>
-            </table>
-
+            <h3>В трекере сейчас задач:</h3>
+            <ul class="task_status_list">
+                <li th:each="tInstance : ${tasksByStatus}"><a th:href="@{'/tasks/bystatus/' + ${tInstance.key}}" th:text="${tInstance.key.getRussianTitle() + ' - ' + tInstance.value}"></a></li>
+            </ul>
             <div th:insert="include/footer :: common_footer"></div>
         </div>
     </body>

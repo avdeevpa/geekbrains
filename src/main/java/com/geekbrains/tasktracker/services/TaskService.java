@@ -54,6 +54,7 @@ public class TaskService {
     public List<Task> getTaskByStatus(Task.Status status) {
         return storage.getTasks().stream()
                 .filter(task -> task.getStatus() == status)
+                .sorted((o1, o2) -> (int)(o1.getId() - o2.getId()))
                 .collect(Collectors.toList());
     }
 
@@ -63,6 +64,12 @@ public class TaskService {
     }
 
     public List<Task> getSortedTaskList() {
+        return storage.getTasks().stream()
+                .sorted((o1, o2) -> (int)(o1.getId() - o2.getId()))
+                .collect(Collectors.toList());
+    }
+
+    public List<Task> getSortedByStatusTaskList() {
         return storage.getTasks().stream()
                 .sorted((o1, o2) -> o1.getStatus().getSortOrder() - o2.getStatus().getSortOrder())
                 .collect(Collectors.toList());

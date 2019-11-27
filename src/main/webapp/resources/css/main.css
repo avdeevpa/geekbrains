@@ -12,6 +12,7 @@ body {
 h1 {
     font-size: 18px;
     font-weight: 700;
+    margin-bottom: 20px;
 }
 
 h3 {
@@ -19,13 +20,25 @@ h3 {
 }
 
 .content {
-    padding: 0 40px;
+    width: 800px;
+    margin: 0 auto;
 }
 
-.main-menu {
+.logo {
     display: block;
     margin-top: 60px;
     margin-bottom: 30px;
+    height: 84px;
+}
+.logo-img {
+    display: inline-block;
+    float: left;
+}
+
+.main-menu {
+    display: inline-block;
+    float: right;
+    margin-top: 23px;
 }
 .main-menu > ul > li {
     display: inline-block;
@@ -35,7 +48,7 @@ h3 {
 .main-menu a {
     display: inline-block;
     text-decoration: none;
-    color: #8c8c8c;
+    color: #ec4c4c;
     font-size: 14px;
     font-weight: 300;
     text-transform: uppercase;
@@ -43,7 +56,7 @@ h3 {
     padding: 10px 13px;
 }
 .main-menu a:hover {
-    color: #212121;
+    color: #1761a0;
 }
 
 /*footer*/
@@ -57,13 +70,32 @@ h3 {
 
 /*Tasks*/
 .task-table {
-    width: 600px;
+    width: 800px;
+    border-spacing: 0;
+    border-collapse: collapse;
 }
 
 .task-table > thead > tr > td {
     font-weight: 700;
+    border-bottom: 2px solid #212121;
 }
 
 .task-table > tbody > tr > td {
     padding: 5px 5px;
+    border: 1px solid #dcdcdc;
+}
+
+/* Used by index */
+.task_status_list {
+    display: block;
+    padding-left: 50px;
+}
+
+.task_status_list a{
+    text-decoration: none;
+    color: #1761a0;
+}
+.task_status_list a:hover{
+    text-decoration: underline;
+    color: #ec4c4c;
 }

@@ -1,6 +1,7 @@
 package com.geekbrains.tasktracker.entities;
 
 import com.geekbrains.tasktracker.exceptions.TTStorageException;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
