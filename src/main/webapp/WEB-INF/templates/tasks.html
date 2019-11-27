@@ -8,7 +8,12 @@
             <div th:insert="include/header :: logo"></div>
             <h1 th:text="${title}"></h1>
 
-            <div class="add-task"><a th:href="@{/tasks/edit}"><img th:src="@{/resources/img/plus.png}" alt="+" class="add-task-img">Добавить задачу</a></div>
+
+
+            <div class="control-panel">
+                <h3 th:if="${status_filter != null}" th:text="${'Включена фильтрация статуса: ' + status_filter.getRussianTitle() + '(' + status_filter + ')'}" class="status-filter"></h3>
+                <a th:href="@{/tasks/edit}" class="add-task"><img th:src="@{/resources/img/plus.png}" alt="+" class="add-task-img">Добавить задачу</a>
+            </div>
             <table class="task-table">
                 <thead>
                 <tr>
@@ -25,7 +30,7 @@
                         <td th:text="${t.id}"></td>
                         <td><a th:href="@{'/tasks/edit?id=' + ${t.id}}" th:text="${t.caption}"></a></td>
                         <td th:text="${t.owner}"></td>
-                        <td th:text="${t.status}"></td>
+                        <td th:text="${t.status.getRussianTitle()}"></td>
                         <td th:text="${t.assigned}"></td>
                         <td th:text="${t.description}"></td>
                     </tr>
