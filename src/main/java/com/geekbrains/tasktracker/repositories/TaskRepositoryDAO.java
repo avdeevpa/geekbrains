@@ -6,7 +6,6 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.PersistenceException;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,11 +26,7 @@ public class TaskRepositoryDAO implements TaskRepository {
     public Task addEdtTask(Task task) {
         Session session = factory.getCurrentSession();
         session.beginTransaction();
-//        try {
-//            session.persist(task);
-//        } catch (PersistenceException e) {
-            session.merge(task);
-//        }
+        session.merge(task);
         session.getTransaction().commit();
         return task;
     }
