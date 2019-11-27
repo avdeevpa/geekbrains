@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.PersistenceException;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,7 +27,11 @@ public class TaskRepositoryDAO implements TaskRepository {
     public Task addEdtTask(Task task) {
         Session session = factory.getCurrentSession();
         session.beginTransaction();
-        session.persist(task);
+//        try {
+//            session.persist(task);
+//        } catch (PersistenceException e) {
+            session.merge(task);
+//        }
         session.getTransaction().commit();
         return task;
     }
@@ -51,25 +56,21 @@ public class TaskRepositoryDAO implements TaskRepository {
 
     @Override
     public void deleteTask(Long id) {
-        try (Session session = factory.openSession()) {
-            session.beginTransaction();
-            session.createQuery("DELETE FROM Task a WHERE a.id=:id")
-                    .setParameter("id", id)
-                    .executeUpdate();
-            session.getTransaction().commit();
-            session.close();
-        }
+        Session session = factory.getCurrentSession();
+        session.beginTransaction();
+        session.createQuery("DELETE FROM Task a WHERE a.id=:id")
+                .setParameter("id", id)
+                .executeUpdate();
+        session.getTransaction().commit();
     }
 
     @Override
     public void deleteTask(String caption) {
-        try (Session session = factory.openSession()) {
-            session.beginTransaction();
-            session.createQuery("DELETE FROM Task a WHERE a.caption=:caption")
-                    .setParameter("caption", caption)
-                    .executeUpdate();
-            session.getTransaction().commit();
-            session.close();
-        }
+        Session session = factory.getCurrentSession();
+        session.beginTransaction();
+        session.createQuery("DELETE FROM Task a WHERE a.caption=:caption")
+                .setParameter("caption", caption)
+                .executeUpdate();
+        session.getTransaction().commit();
     }
 }

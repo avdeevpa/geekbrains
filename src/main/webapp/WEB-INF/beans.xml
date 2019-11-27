@@ -45,7 +45,7 @@
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="oracle.jdbc.OracleDriver"/>
-        <property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl?characterEncoding=win1251"/>
+        <property name="url" value="jdbc:oracle:thin:@10.147.241.93:1521:test?characterEncoding=win1251"/>
         <property name="username" value="hibernate"/>
         <property name="password" value="hibernate"/>
     </bean>

@@ -8,7 +8,7 @@
             <div th:insert="include/header :: logo"></div>
             <h1 th:text="${title}"></h1>
 
-            <a th:href="@{/tasks/add}">добавить</a>
+            <div class="add-task"><a th:href="@{/tasks/edit}"><img th:src="@{/resources/img/plus.png}" alt="+" class="add-task-img">Добавить задачу</a></div>
             <table class="task-table">
                 <thead>
                 <tr>
@@ -23,7 +23,7 @@
                 <tbody>
                     <tr th:each="t : ${tasks}">
                         <td th:text="${t.id}"></td>
-                        <td th:text="${t.caption}"></td>
+                        <td><a th:href="@{'/tasks/edit?id=' + ${t.id}}" th:text="${t.caption}"></a></td>
                         <td th:text="${t.owner}"></td>
                         <td th:text="${t.status}"></td>
                         <td th:text="${t.assigned}"></td>

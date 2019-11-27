@@ -2,10 +2,13 @@ package com.geekbrains.tasktracker.controllers;
 
 import com.geekbrains.tasktracker.entities.Task;
 import com.geekbrains.tasktracker.services.TaskService;
+import org.eclipse.jetty.server.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.crypto.spec.PSource;
 
 @Controller
 @RequestMapping("/tasks")
@@ -29,14 +32,29 @@ public class TaskController {
         return "tasks";
     }
 
-    @RequestMapping(path = "/add", method = RequestMethod.GET)
-    public String taskAddForm(@ModelAttribute("task") Task task) {
+//    @RequestMapping(path = "/edit", method = RequestMethod.GET)
+//    public String taskAddForm(@ModelAttribute("task") Task task) {
+//        return "tasks_form";
+//    }
+
+    @RequestMapping(path = "/edit", method = RequestMethod.GET)
+    public String taskEditForm(Model model, @RequestParam(value="id", required=false) Long id) {
+        if(id != null) {
+            model.addAttribute("task", taskService.getTaskById(id));
+        }
+        else {
+           model.addAttribute("task", new Task());
+        }
         return "tasks_form";
     }
 
     @RequestMapping(path = "/task_form_processing", method = RequestMethod.POST)
-    public String taskAddFormProc(@ModelAttribute("task") Task task) {
-        taskService.addEdtTasks(task);
+    public String taskAddFormProc(@ModelAttribute("task") Task task, @RequestParam(value="delete_action", required = false) String deleteAction) {
+        if (deleteAction != null && task.getId() != null) {
+            taskService.deleteTask(Long.toString(task.getId()));
+        } else {
+            taskService.addEdtTasks(task);
+        }
         return "redirect:/tasks/";
     }
 

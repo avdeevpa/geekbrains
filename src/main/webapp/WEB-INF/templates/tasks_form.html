@@ -9,11 +9,12 @@
             <h1 th:text="${title}"></h1>
 
             <form th:action="@{/tasks/task_form_processing}" th:object="${task}" method="POST">
+                <input th:if="*{id != null}" type="hidden" th:field="*{id}"/>
                 <table class="task-table">
                     <tbody>
                         <tr>
                             <td>Название задачи</td>
-                            <td><input th:field="*{caption}" placeholder="Название задачи"/></td>
+                            <td><input type="text" th:field="*{caption}" placeholder="Название задачи"/></td>
                         </tr>
                         <tr>
                             <td>Инициатор</td>
@@ -23,8 +24,27 @@
                             <td>Описание</td>
                             <td><input th:field="*{description}"  placeholder="Описание"/></td>
                         </tr>
+                        <tr th:if="*{id != null}">
+                            <td>Статус</td>
+                            <td>
+                                <select th:field="*{status}">
+                                    <option th:each="status : ${T(com.geekbrains.tasktracker.entities.Task.Status).values()}"
+                                            th:value="${status}"
+                                            th:text="${status.getRussianTitle()}">
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr th:if="*{id != null}">
+                            <td>Назначена</td>
+                            <td><input th:field="*{assigned}"  placeholder="Назначена"/></td>
+                        </tr>
                         <tr>
-                            <td colspan="2"><input type="submit"/></td>
+                            <td th:if="*{id == null}" colspan="2"><input type="submit" value="Добавить"/></td>
+                            <td th:if="*{id != null}" colspan="2">
+                                <input type="submit" value="Сохранить"/>
+                                <input type="submit" name="delete_action" value="Удалить"/>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
