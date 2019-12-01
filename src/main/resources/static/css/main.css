@@ -1,0 +1,144 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    color: #2c2c2c;
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+a {
+    color: #ec4c4c;
+}
+a:hover {
+    color: #860018;
+}
+
+h1 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+h3 {
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.content {
+    width: 800px;
+    margin: 0 auto;
+}
+
+.logo {
+    display: block;
+    margin-top: 60px;
+    margin-bottom: 30px;
+    height: 84px;
+}
+.logo-img {
+    display: inline-block;
+    float: left;
+}
+
+.main-menu {
+    display: inline-block;
+    float: right;
+    margin-top: 23px;
+}
+.main-menu > ul > li {
+    display: inline-block;
+    outline: 1px solid darkgrey;
+    list-style: none;
+}
+.main-menu a {
+    display: inline-block;
+    text-decoration: none;
+    color: #ec4c4c;
+    font-size: 14px;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    padding: 10px 13px;
+}
+.main-menu a:hover {
+    color: #1761a0;
+}
+
+/*footer*/
+.footer {
+    display: block;
+    margin-top: 30px;
+    height: 10px;
+    margin-bottom: 30px;
+    border-top: 1px solid black;
+}
+
+/*Tasks*/
+.task-table {
+    width: 800px;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+.task-table > thead > tr > td {
+    font-weight: 700;
+    border-bottom: 2px solid #212121;
+}
+
+.task-table > tbody > tr > td {
+    padding: 5px 5px;
+    border: 1px solid #dcdcdc;
+}
+.task-table-filter > td {
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+.control-panel {
+    display: block;
+    height: 20px;
+    margin-bottom: 20px;
+}
+.control-panel h3, select, a, img {
+    display: inline-block;
+}
+
+.add-task {
+    display: inline-block;
+    float: right;
+}
+.status-filter{
+    display: inline-block;
+    float: left;
+}
+
+.add-task-img {
+    height: 20px;
+    width: 20px;
+}
+
+/* Used by index */
+.task_status_list {
+    display: block;
+    padding-left: 50px;
+}
+
+.task_status_list a{
+    text-decoration: none;
+    color: #1761a0;
+}
+.task_status_list a:hover{
+    text-decoration: underline;
+    color: #ec4c4c;
+}
+
+/* Footer */
+.footer {
+    display: block;
+    padding-top: 20px;
+    padding-bottom: 50px;
+    text-align: center;
+    font-size: 12px;
+}
