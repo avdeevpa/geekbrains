@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:with="title = 'GeekApp - Главная'">
+    <head  th:replace="include/header :: common_header(${title})">
+    </head>
+    <body>
+        <div class="content">
+            <div th:insert="include/header :: logo"></div>
+            <h1 th:text="${title}"></h1>
+            <h3>В трекере сейчас задач:</h3>
+            <ul class="task_status_list">
+                <li th:each="tInstance : ${tasksByStatus}"><a th:href="@{'/tasks/bystatus/' + ${tInstance.key}}" th:text="${tInstance.key.getRussianTitle() + ' - ' + tInstance.value}"></a></li>
+            </ul>
+            <div th:insert="include/footer :: common_footer"></div>
+        </div>
+    </body>
+</th:block>
+</html>

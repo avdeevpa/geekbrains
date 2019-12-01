@@ -1,6 +1,6 @@
-package com.geekbrains.learning.tasktracker.repositories;
+package com.geekbrains.tasktracker.repositories;
 
-import com.geekbrains.learning.tasktracker.entities.Task;
+import com.geekbrains.tasktracker.entities.Task;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class TaskRepositoryDAO implements TaskRepository {
     public Task addEdtTask(Task task) {
         Session session = factory.getCurrentSession();
         session.beginTransaction();
-        session.persist(task);
+        session.merge(task);
         session.getTransaction().commit();
         return task;
     }
@@ -51,25 +51,21 @@ public class TaskRepositoryDAO implements TaskRepository {
 
     @Override
     public void deleteTask(Long id) {
-        try (Session session = factory.openSession()) {
-            session.beginTransaction();
-            session.createQuery("DELETE FROM Task a WHERE a.id=:id")
-                    .setParameter("id", id)
-                    .executeUpdate();
-            session.getTransaction().commit();
-            session.close();
-        }
+        Session session = factory.getCurrentSession();
+        session.beginTransaction();
+        session.createQuery("DELETE FROM Task a WHERE a.id=:id")
+                .setParameter("id", id)
+                .executeUpdate();
+        session.getTransaction().commit();
     }
 
     @Override
     public void deleteTask(String caption) {
-        try (Session session = factory.openSession()) {
-            session.beginTransaction();
-            session.createQuery("DELETE FROM Task a WHERE a.caption=:caption")
-                    .setParameter("caption", caption)
-                    .executeUpdate();
-            session.getTransaction().commit();
-            session.close();
-        }
+        Session session = factory.getCurrentSession();
+        session.beginTransaction();
+        session.createQuery("DELETE FROM Task a WHERE a.caption=:caption")
+                .setParameter("caption", caption)
+                .executeUpdate();
+        session.getTransaction().commit();
     }
 }

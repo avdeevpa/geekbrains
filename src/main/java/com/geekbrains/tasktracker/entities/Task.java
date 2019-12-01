@@ -1,6 +1,7 @@
-package com.geekbrains.learning.tasktracker.entities;
+package com.geekbrains.tasktracker.entities;
 
-import com.geekbrains.learning.tasktracker.exceptions.TTStorageException;
+import com.geekbrains.tasktracker.exceptions.TTStorageException;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -53,8 +54,8 @@ public class Task implements Serializable {
     @Enumerated(javax.persistence.EnumType.STRING)
     private Status status;
 
-    private Task() {
-
+    public Task() {
+        this.status = Status.CREATED;
     }
 
     public Task(String caption, String owner, String description) {
@@ -65,10 +66,7 @@ public class Task implements Serializable {
     }
 
     public void assign(String assigned) throws TTStorageException {
-        if (this.assigned != null) {
-            throw new TTStorageException("Задача уже назначена!");
-        }
-        this.assigned = assigned;
+
     }
 
     public Status getStatus() {
@@ -91,16 +89,35 @@ public class Task implements Serializable {
         return caption;
     }
 
+    public void setCaption(String caption) {
+        this.caption = caption;
+    }
+
     public String getAssigned() {
         return assigned;
+    }
+
+    public void setAssigned(String assigned) throws TTStorageException {
+        if (this.assigned != null) {
+            throw new TTStorageException("Задача уже назначена!");
+        }
+        this.assigned = assigned;
     }
 
     public String getDescription() {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getOwner() {
         return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     @Override
