@@ -1,11 +1,15 @@
 package com.geekbrains.tasktracker.controllers;
 
 import com.geekbrains.tasktracker.entities.Task;
+import com.geekbrains.tasktracker.repositories.specifications.TaskSpecifications;
 import com.geekbrains.tasktracker.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @Controller
 @RequestMapping("/tasks")
@@ -20,33 +24,27 @@ public class TaskController {
     @GetMapping(path = "/")
     public String showTasks(
             Model model,
-            @RequestParam(value = "id", required = false) Long id,
-            @RequestParam(value = "caption", required = false) String caption,
-            @RequestParam(value = "status", required = false) Task.Status status,
-            @RequestParam(value = "assigned", required = false) String assigned,
-            @RequestParam(value = "owner", required = false) String owner,
-            @RequestParam(value = "description", required = false) String description
+            @RequestParam Map<String, String> params
     ) {
-        if (status != null | assigned != null | owner != null | id != null | caption != null | description != null) {
-            Task sample = new Task();
-            sample.setId(id);
-            sample.setCaption(caption);
-            sample.setStatus(status);
-            sample.setAssigned(assigned);
-            sample.setOwner(owner);
-            sample.setDescription(description);
-
-            model.addAttribute("id", id);
-            model.addAttribute("caption", caption);
-            model.addAttribute("status", status);
-            model.addAttribute("assigned", assigned);
-            model.addAttribute("owner", owner);
-            model.addAttribute("description", description);
-
-            model.addAttribute("tasks", taskService.getTaskBySample(sample));
-        } else {
-            model.addAttribute("tasks", taskService.getSortedTaskList());
+        Specification<Task> spec = Specification.where(null);
+        if (params.get("status") != null && params.get("status").length() != 0) {
+            spec = spec.and(TaskSpecifications.statusEq(Task.Status.valueOf(params.get("status"))));
         }
+        if (params.get("assigned")  != null && params.get("assigned").length() != 0) {
+            spec = spec.and(TaskSpecifications.assignedContains(params.get("assigned")));
+        }
+        if (params.get("id")  != null && params.get("id").length() != 0) {
+            spec = spec.and(TaskSpecifications.idEq(Long.getLong(params.get("id"))));
+        }
+        if (params.get("owner") != null && params.get("owner").length() != 0) {
+            spec = spec.and(TaskSpecifications.ownerContains(params.get("owner")));
+        }
+        if (params.get("description") != null && params.get("description").length() != 0) {
+            spec = spec.and(TaskSpecifications.descriptionContains(params.get("owner")));
+        }
+
+        model.addAllAttributes(params);
+        model.addAttribute("tasks", taskService.getTasks(spec));
         return "tasks";
     }
 

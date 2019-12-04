@@ -40,12 +40,12 @@
                         <td><input size="10" name="owner" th:value="${owner != null ? owner : null}" type="text" placeholder="Инициатор"></td>
                         <td>
                             <select name="status">
-                                <option th:each="status : ${T(com.geekbrains.tasktracker.entities.Task.Status).values()}"
-                                        th:text="${status.getRussianTitle()}"
-                                        th:value="${status}"
-                                        th:selected="(${status} == *{status_filter})">
+                                <option th:each="stt : ${T(com.geekbrains.tasktracker.entities.Task.Status).values()}"
+                                        th:text="${stt.getRussianTitle()}"
+                                        th:value="${stt}"
+                                        th:selected="(${stt.toString()} == *{status})">
                                 </option>
-                                <option value="" th:selected="(*{status} == null)">--- Все статусы ---</option>
+                                <option value="" th:selected="(*{status == null || status == ''})">--- Все статусы ---</option>
                             </select>
                         </td>
                         <td><input size="10" name="assigned" th:value="${assigned != null ? assigned : null}" type="text" placeholder="Исполнитель"></td>
