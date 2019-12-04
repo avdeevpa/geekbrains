@@ -33,9 +33,8 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
-    // todo: return task
-    public void addEdtTasks(Task task) {
-        storage.save(task);
+    public Task addEdtTasks(Task task) {
+        return storage.save(task);
     }
 
     public void deleteTask(Long id) {

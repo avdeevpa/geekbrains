@@ -22,10 +22,7 @@ public class TaskController {
     }
 
     @GetMapping(path = "/")
-    public String showTasks(
-            Model model,
-            @RequestParam Map<String, String> params
-    ) {
+    public String showTasks(Model model, @RequestParam Map<String, String> params) {
         Specification<Task> spec = Specification.where(null);
         if (params.get("status") != null && params.get("status").length() != 0) {
             spec = spec.and(TaskSpecifications.statusEq(Task.Status.valueOf(params.get("status"))));
