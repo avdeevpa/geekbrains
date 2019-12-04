@@ -4,6 +4,7 @@ import com.geekbrains.tasktracker.entities.Task;
 import com.geekbrains.tasktracker.repositories.TaskRepository;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -21,16 +22,12 @@ public class TaskService {
         this.storage = storage;
     }
 
-    public List<Task> getTasks() {
-        return storage.findAll().stream()
-                .sorted((o1, o2) -> (int)(o1.getId() - o2.getId()))
-                .collect(Collectors.toList());
+    public List<Task> getTasks(Specification<Task> spec) {
+        return storage.findAll(spec, Sort.by(Sort.Direction.ASC, "id"));
     }
 
-    public List<Task> getTasks(Specification<Task> spec) {
-        return storage.findAll(spec).stream()
-                .sorted((o1, o2) -> (int)(o1.getId() - o2.getId()))
-                .collect(Collectors.toList());
+    public List<Task> getTasks() {
+        return getTasks(null);
     }
 
     public Task addEdtTasks(Task task) {
