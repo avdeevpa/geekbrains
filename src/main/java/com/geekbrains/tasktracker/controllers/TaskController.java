@@ -5,6 +5,9 @@ import com.geekbrains.tasktracker.entities.validations.TaskAddEdtGroup;
 import com.geekbrains.tasktracker.repositories.specifications.TaskSpecifications;
 import com.geekbrains.tasktracker.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +29,12 @@ public class TaskController {
 
     @GetMapping(path = "/")
     public String showTasks(Model model, @RequestParam Map<String, String> params) {
+        int page = 1;
+        int tasksPerPage = 3;
+        if (params.get("page") != null && params.get("page").length() != 0) {
+            page = Integer.parseInt(params.get("page"));
+        }
+
         Specification<Task> spec = Specification.where(null);
         if (params.get("status") != null && params.get("status").length() != 0) {
             spec = spec.and(TaskSpecifications.statusEq(Task.Status.valueOf(params.get("status"))));
@@ -43,8 +52,11 @@ public class TaskController {
             spec = spec.and(TaskSpecifications.descriptionContains(params.get("owner")));
         }
 
+        Page<Task> taskPage = taskService.getTasks(spec, PageRequest.of(page - 1,  tasksPerPage, Sort.Direction.ASC, "id"));
+        model.addAttribute("taskPage", taskPage);
+
         model.addAllAttributes(params);
-        model.addAttribute("tasks", taskService.getTasks(spec));
+        //model.addAttribute("tasks", taskService.getTasks(spec));
         return "tasks";
     }
 

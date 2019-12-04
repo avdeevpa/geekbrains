@@ -4,6 +4,8 @@ import com.geekbrains.tasktracker.entities.Task;
 import com.geekbrains.tasktracker.repositories.TaskRepository;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,10 @@ public class TaskService {
     @Autowired
     public void setStorage(TaskRepository storage) {
         this.storage = storage;
+    }
+
+    public Page<Task> getTasks(Specification<Task> spec, Pageable pagable) {
+        return storage.findAll(spec, pagable);
     }
 
     public List<Task> getTasks(Specification<Task> spec) {
@@ -58,4 +64,7 @@ public class TaskService {
         return countOfAllStatus().get(status);
     }
 
+    //    public Page<Product> getAllProducts(Specification<Product> spec, Pageable pageable) {
+    //        return productRepository.findAll(spec, pageable);
+    //    }
 }

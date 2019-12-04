@@ -23,7 +23,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="t : ${tasks}">
+                    <tr th:each="t : ${taskPage.getContent()}">
                         <td th:text="${t.id}"></td>
                         <td><a th:href="@{'/tasks/edit?id=' + ${t.id}}" th:text="${t.caption}"></a></td>
                         <td th:text="${t.owner}"></td>
@@ -59,6 +59,13 @@
                     </form>
                 </tfoot>
             </table>
+            <div class="pagination" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
+                <ul>
+                    <li class="page" th:each="i : ${#numbers.sequence(1, taskPage.getTotalPages())}">
+                        <a th:class="page-link" th:classappend="${taskPage.getNumber() + 1 == i ? 'page-active' : ''}" th:text="${i}" th:href="${urlBuilder.replaceQueryParam('page', i).toUriString()}"></a>
+                    </li>
+                </ul>
+            </div>
             <div th:insert="include/footer :: common_footer"></div>
         </div>
     </body>
