@@ -34,6 +34,9 @@ public class TaskService {
     }
 
     public Task addEdtTasks(Task task) {
+        if (task.getStatus() == null) {
+            task.setStatus(Task.Status.CREATED);
+        }
         return storage.save(task);
     }
 

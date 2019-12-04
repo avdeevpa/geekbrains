@@ -1,12 +1,15 @@
 package com.geekbrains.tasktracker.controllers;
 
 import com.geekbrains.tasktracker.entities.Task;
+import com.geekbrains.tasktracker.entities.validations.TaskAddEdtGroup;
 import com.geekbrains.tasktracker.repositories.specifications.TaskSpecifications;
 import com.geekbrains.tasktracker.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -56,10 +59,17 @@ public class TaskController {
     }
 
     @PostMapping(path = "/edit")
-    public String taskEditFormProc(@ModelAttribute("task") Task task, @RequestParam(value = "delete_action", required = false) String deleteAction) {
+    public String taskEditFormProc(
+            @ModelAttribute("task") @Validated(value = {TaskAddEdtGroup.class}) Task task,
+            BindingResult bindingResult,
+            @RequestParam(value = "delete_action", required = false) String deleteAction
+    ) {
         if (deleteAction != null && task.getId() != null) {
             taskService.deleteTask(task.getId());
         } else {
+            if (bindingResult.hasErrors()) {
+                return "tasks_form";
+            }
             taskService.addEdtTasks(task);
         }
         return "redirect:/tasks/";
