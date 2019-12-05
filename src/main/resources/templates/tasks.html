@@ -61,7 +61,7 @@
             </table>
             <div class="pagination" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
                 <ul>
-                    <li class="page" th:each="i : ${#numbers.sequence(1, taskPage.getTotalPages())}">
+                    <li class="page" th:each="i : ${#numbers.sequence(1, (taskPage.getTotalPages() == 0? 1 : taskPage.getTotalPages()) )}">
                         <a th:class="page-link" th:classappend="${taskPage.getNumber() + 1 == i ? 'page-active' : ''}" th:text="${i}" th:href="${urlBuilder.replaceQueryParam('page', i).toUriString()}"></a>
                     </li>
                 </ul>
