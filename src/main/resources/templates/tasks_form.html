@@ -22,7 +22,12 @@
                         <tr>
                             <td>Инициатор</td>
                             <td>
-                                <input th:field="*{owner}" placeholder="Инициатор"/>
+                                <select th:field="*{owner}">
+                                    <option th:each="initiator : ${initiators}"
+                                            th:value="${initiator.id}"
+                                            th:text="${initiator.username}">
+                                    </option>
+                                </select>
                                 <div class="field-error" th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}" />
                             </td>
                         </tr>
@@ -46,7 +51,16 @@
                         </tr>
                         <tr th:if="*{id != null}">
                             <td>Назначена</td>
-                            <td><input th:field="*{assigned}"  placeholder="Назначена"/></td>
+                            <td>
+                                <select th:field="*{assigned}">
+                                    <option value="">- Не назначена -</option>
+                                    <option th:each="assignee : ${assignees}"
+                                            th:value="${assignee.id}"
+                                            th:text="${assignee.username}">
+                                    </option>
+                                </select>
+                                <h3 th:text="*{assigned}"></h3>
+                            </td>
                         </tr>
                         <tr>
                             <td th:if="*{id == null}" colspan="2"><input type="submit" value="Добавить"/></td>

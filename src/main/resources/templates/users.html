@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:with="title = 'Пользователи'">
+    <head  th:replace="include/header :: common_header(${title})">
+    </head>
+    <body>
+        <div class="content">
+            <div th:insert="include/header :: logo"></div>
+            <h1 th:text="${title}"></h1>
+
+            <div class="control-panel">
+                <a th:href="@{/users/edit}" class="add-task"><img th:src="@{/img/plus.png}" alt="+" class="add-task-img">Добавить пользователя</a>
+            </div>
+            <table class="task-table">
+                <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>Имя пользователя</td>
+                    <td>Роли</td>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="u : ${users}">
+                        <td th:text="${u.id}"></td>
+                        <td><a th:href="@{'/users/edit?id=' + ${u.id}}" th:text="${u.username}"></a></td>
+                        <td><span th:each="userRole : ${u.roles}" th:text="${userRole.name}"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</th:block>
+</html>

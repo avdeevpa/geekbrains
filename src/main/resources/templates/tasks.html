@@ -26,9 +26,9 @@
                     <tr th:each="t : ${taskPage.getContent()}">
                         <td th:text="${t.id}"></td>
                         <td><a th:href="@{'/tasks/edit?id=' + ${t.id}}" th:text="${t.caption}"></a></td>
-                        <td th:text="${t.owner}"></td>
+                        <td th:text="${t.owner.username}"></td>
                         <td th:text="${t.status.getRussianTitle()}"></td>
-                        <td th:text="${t.assigned}"></td>
+                        <td th:text="${t.assigned != null ? t.assigned.username : '- Не назначена -' }"></td>
                         <td th:text="${t.description}"></td>
                     </tr>
                 </tbody>

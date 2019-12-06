@@ -4,6 +4,7 @@ import com.geekbrains.tasktracker.entities.Task;
 import com.geekbrains.tasktracker.entities.validations.TaskAddEdtGroup;
 import com.geekbrains.tasktracker.repositories.specifications.TaskSpecifications;
 import com.geekbrains.tasktracker.services.TaskService;
+import com.geekbrains.tasktracker.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,10 +22,16 @@ import java.util.Map;
 @RequestMapping("/tasks")
 public class TaskController {
     TaskService taskService;
+    UserService userService;
 
     @Autowired
     public void setTaskService(TaskService taskService) {
         this.taskService = taskService;
+    }
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping(path = "/")
@@ -67,6 +74,8 @@ public class TaskController {
         } else {
             model.addAttribute("task", new Task());
         }
+        model.addAttribute("initiators", userService.getInitiators());
+        model.addAttribute("assignees", userService.getExecutors());
         return "tasks_form";
     }
 

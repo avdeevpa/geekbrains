@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:with="title = 'Редактирование профиля пользователя'">
+    <head  th:replace="include/header :: common_header(${title})">
+    </head>
+    <body>
+        <div class="content">
+            <div th:insert="include/header :: logo"></div>
+            <h1 th:text="${title}"></h1>
+
+            <form th:action="@{/users/roles/edit}" th:object="${role}" method="POST">
+                <input th:if="*{id != null}" type="hidden" th:field="*{id}"/>
+                <table class="task-table">
+                    <tbody>
+                        <tr>
+                            <td>Роль</td>
+                            <td>
+                                <input type="text" th:field="*{name}" placeholder="Роль"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Описание</td>
+                            <td>
+                                <input type="text" th:field="*{description}" placeholder="Описание"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td th:if="*{id == null}" colspan="2"><input type="submit" value="Добавить"/></td>
+                            <td th:if="*{id != null}" colspan="2">
+                                <input type="submit" value="Сохранить"/>
+                                <input type="submit" name="delete_action" value="Удалить"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+            <div th:insert="include/footer :: common_footer"></div>
+        </div>
+    </body>
+</th:block>
+</html>

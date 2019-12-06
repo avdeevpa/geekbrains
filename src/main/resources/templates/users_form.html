@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:with="title = 'Редактирование профиля пользователя'">
+    <head  th:replace="include/header :: common_header(${title})">
+    </head>
+    <body>
+        <div class="content">
+            <div th:insert="include/header :: logo"></div>
+            <h1 th:text="${title}"></h1>
+
+            <form th:action="@{/users/edit}" th:object="${user}" method="POST">
+                <input th:if="*{id != null}" type="hidden" th:field="*{id}"/>
+                <table class="task-table">
+                    <tbody>
+                        <tr>
+                            <td>Имя пользователя</td>
+                            <td>
+                                <input type="text" th:field="*{username}" placeholder="Имя пользователя"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Пароль</td>
+                            <td>
+                                <input th:field="*{password}" placeholder="Пароль"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Подтверждение пароля</td>
+                            <td>
+                                <input th:field="*{passwordConfirm}"  placeholder="Подтверждение пароля"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Роли</td>
+                            <td>
+                                <div th:each="r : ${roles}">
+                                    <input type="checkbox" th:field="*{roles}"  th:value="${r.id}" th:text="${r.name}" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Инициатор заявок</td>
+                            <td>
+                                <input type="checkbox" th:field="*{canInitiate}" th:value="${canInitiate}" th:text="${'Может создавать завки'}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Исполнитель заявок</td>
+                            <td>
+                                <input type="checkbox" th:field="*{canExecute}" th:value="${canExecute}" th:text="${'Может исполнять заявки'}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td th:if="*{id == null}" colspan="2"><input type="submit" value="Добавить"/></td>
+                            <td th:if="*{id != null}" colspan="2">
+                                <input type="submit" value="Сохранить"/>
+                                <input type="submit" name="delete_action" value="Удалить"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+            <div th:insert="include/footer :: common_footer"></div>
+        </div>
+    </body>
+</th:block>
+</html>

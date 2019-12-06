@@ -47,12 +47,11 @@ public class Task implements Serializable {
     @Column(name = "caption")
     private String caption;
 
-    @NotEmpty(message = "У задачи должен быть инициатор", groups = {TaskAddEdtGroup.class})
-    @Column(name = "owner")
-    private String owner;
+    @ManyToOne
+    private User owner;
 
-    @Column(name = "assigned")
-    private String assigned;
+    @ManyToOne
+    private User assigned;
 
     @Size(min=10, max=250, message="Требуется описание (10 - 250 символов)", groups = {TaskAddEdtGroup.class})
     @Column(name = "description")
