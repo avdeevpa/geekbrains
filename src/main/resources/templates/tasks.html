@@ -23,7 +23,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="t : ${tasks}">
+                    <tr th:each="t : ${taskPage.getContent()}">
                         <td th:text="${t.id}"></td>
                         <td><a th:href="@{'/tasks/edit?id=' + ${t.id}}" th:text="${t.caption}"></a></td>
                         <td th:text="${t.owner}"></td>
@@ -40,12 +40,12 @@
                         <td><input size="10" name="owner" th:value="${owner != null ? owner : null}" type="text" placeholder="Инициатор"></td>
                         <td>
                             <select name="status">
-                                <option th:each="status : ${T(com.geekbrains.tasktracker.entities.Task.Status).values()}"
-                                        th:text="${status.getRussianTitle()}"
-                                        th:value="${status}"
-                                        th:selected="(${status} == *{status_filter})">
+                                <option th:each="stt : ${T(com.geekbrains.tasktracker.entities.Task.Status).values()}"
+                                        th:text="${stt.getRussianTitle()}"
+                                        th:value="${stt}"
+                                        th:selected="(${stt.toString()} == *{status})">
                                 </option>
-                                <option value="" th:selected="(*{status} == null)">--- Все статусы ---</option>
+                                <option value="" th:selected="(*{status == null || status == ''})">--- Все статусы ---</option>
                             </select>
                         </td>
                         <td><input size="10" name="assigned" th:value="${assigned != null ? assigned : null}" type="text" placeholder="Исполнитель"></td>
@@ -59,6 +59,13 @@
                     </form>
                 </tfoot>
             </table>
+            <div class="pagination" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
+                <ul>
+                    <li class="page" th:each="i : ${#numbers.sequence(1, (taskPage.getTotalPages() == 0? 1 : taskPage.getTotalPages()) )}">
+                        <a th:class="page-link" th:classappend="${taskPage.getNumber() + 1 == i ? 'page-active' : ''}" th:text="${i}" th:href="${urlBuilder.replaceQueryParam('page', i).toUriString()}"></a>
+                    </li>
+                </ul>
+            </div>
             <div th:insert="include/footer :: common_footer"></div>
         </div>
     </body>

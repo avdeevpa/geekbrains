@@ -4,6 +4,10 @@ import com.geekbrains.tasktracker.entities.Task;
 import com.geekbrains.tasktracker.repositories.TaskRepository;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,49 +24,39 @@ public class TaskService {
         this.storage = storage;
     }
 
+    public Page<Task> getTasks(Specification<Task> spec, Pageable pagable) {
+        return storage.findAll(spec, pagable);
+    }
+
+    public List<Task> getTasks(Specification<Task> spec) {
+        return storage.findAll(spec, Sort.by(Sort.Direction.ASC, "id"));
+    }
+
     public List<Task> getTasks() {
-        return storage.getTasks();
+        return getTasks(null);
     }
 
-    public void addEdtTasks(Task task) {
-        Task result = storage.addEdtTask(task);
-    }
-
-    public void printTasks() {
-        for (Task task : storage.getTasks()) {
-            if (task != null && task.getId() != null) {
-                System.out.println(task);
-            }
+    public Task addEdtTasks(Task task) {
+        if (task.getStatus() == null) {
+            task.setStatus(Task.Status.CREATED);
         }
+        return storage.save(task);
     }
 
     public void deleteTask(Long id) {
-        storage.deleteTask(id);
+        storage.deleteById(id);
     }
 
     public Task getTaskById(Long id){
-        return storage.getTask(id);
-    }
-
-    public List<Task> getTaskBySample(Task sample) {
-        return storage.getTasksFiltred(sample).stream()
-                .sorted((o1, o2) -> (int)(o1.getId() - o2.getId()))
-                .collect(Collectors.toList());
+        return storage.findById(id).get();
     }
 
     public boolean isTaskExists(Long id) {
-        return storage.getTasks().stream()
-                .anyMatch(task -> task.getId().equals(id));
-    }
-
-    public List<Task> getSortedTaskList() {
-        return storage.getTasks().stream()
-                .sorted((o1, o2) -> (int)(o1.getId() - o2.getId()))
-                .collect(Collectors.toList());
+        return storage.existsById(id);
     }
 
     public Map<Task.Status, Long> countOfAllStatus() {
-        return storage.getTasks().stream()
+        return storage.findAll().stream()
                 .collect(Collectors.groupingBy(Task::getStatus, Collectors.counting()));
     }
 
@@ -70,4 +64,7 @@ public class TaskService {
         return countOfAllStatus().get(status);
     }
 
+    //    public Page<Product> getAllProducts(Specification<Product> spec, Pageable pageable) {
+    //        return productRepository.findAll(spec, pageable);
+    //    }
 }

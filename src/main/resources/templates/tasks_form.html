@@ -14,15 +14,24 @@
                     <tbody>
                         <tr>
                             <td>Название задачи</td>
-                            <td><input type="text" th:field="*{caption}" placeholder="Название задачи"/></td>
+                            <td>
+                                <input type="text" th:field="*{caption}" placeholder="Название задачи"/>
+                                <div class="field-error" th:if="${#fields.hasErrors('caption')}" th:errors="*{caption}" />
+                            </td>
                         </tr>
                         <tr>
                             <td>Инициатор</td>
-                            <td><input th:field="*{owner}" placeholder="Инициатор"/></td>
+                            <td>
+                                <input th:field="*{owner}" placeholder="Инициатор"/>
+                                <div class="field-error" th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}" />
+                            </td>
                         </tr>
                         <tr>
                             <td>Описание</td>
-                            <td><input th:field="*{description}"  placeholder="Описание"/></td>
+                            <td>
+                                <input th:field="*{description}"  placeholder="Описание"/>
+                                <div class="field-error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}" />
+                            </td>
                         </tr>
                         <tr th:if="*{id != null}">
                             <td>Статус</td>

@@ -1,13 +1,9 @@
 package com.geekbrains.tasktracker.repositories;
 
 import com.geekbrains.tasktracker.entities.Task;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-import java.util.List;
-
-public interface TaskRepository {
-    Task addEdtTask(Task task);
-    Task getTask(Long id);
-    List<Task> getTasks();
-    List<Task> getTasksFiltred(Task sample);
-    void deleteTask(Long id);
+public interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificationExecutor<Task>, PagingAndSortingRepository<Task, Long> {
 }
