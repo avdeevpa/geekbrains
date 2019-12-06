@@ -59,7 +59,8 @@
                                             th:text="${assignee.username}">
                                     </option>
                                 </select>
-                                <h3 th:text="*{assigned}"></h3>
+                                <div class="field-error" th:if="${#lists.contains(assignees, task.assigned) == false}"
+                                     th:text="${'Задача назначена на пользователя ' + task.assigned.username + ', не являющимся исполнителем!'}"></div>
                             </td>
                         </tr>
                         <tr>

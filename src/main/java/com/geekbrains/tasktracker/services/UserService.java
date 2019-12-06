@@ -38,7 +38,7 @@ public class UserService {
     }
 
     public List<User> getExecutors() {
-        return userRepository.findAll(UserSpecifications.isInitiator(), Sort.by(Sort.Direction.ASC, "username"));
+        return userRepository.findAll(UserSpecifications.isExecutor(), Sort.by(Sort.Direction.ASC, "username"));
     }
 
     public void deleteUser(Long id) {

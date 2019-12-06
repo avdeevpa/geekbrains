@@ -6,7 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 public class UserSpecifications {
     public static Specification<User> isInitiator() {
         return (Specification<User>) (root, criteriaQuery, criteriaBuilder)
-                -> criteriaBuilder.isTrue(root.get("canExecute"));
+                -> criteriaBuilder.isTrue(root.get("canInitiate"));
     }
 
     public static Specification<User> isExecutor() {
