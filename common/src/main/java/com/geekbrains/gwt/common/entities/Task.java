@@ -108,10 +108,11 @@ public class Task implements Serializable {
         return new TaskDTO(
                 this.id,
                 this.caption,
-                this.owner != null ? this.owner.toDto() : null,
-                this.assigned != null ? this.assigned.toDto() : null,
+                this.owner != null ? this.owner.getId() : -1,
+                this.assigned != null ? this.assigned.getId() : -1,
                 this.description,
                 this.status
         );
     }
+
 }

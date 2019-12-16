@@ -1,5 +1,6 @@
 package com.geekbrains.gwt.client;
 
+import com.geekbrains.gwt.common.dtos.TaskDTO;
 import com.geekbrains.gwt.common.dtos.UserDTO;
 import com.geekbrains.gwt.common.entities.Task;
 import com.google.gwt.core.client.GWT;
@@ -89,6 +90,8 @@ public class FilterTaskFormWidget extends Composite {
     interface AddItemFormBinder extends UiBinder<Widget, FilterTaskFormWidget> {
     }
 
+    private ViewTaskPanelWidget viewTaskPanelWidget;
+
     private static FilterTaskFormWidget.AddItemFormBinder uiBinder = GWT.create(FilterTaskFormWidget.AddItemFormBinder.class);
 
     public FilterTaskFormWidget(TaskTableWidget itemsTableWidget) {
@@ -164,5 +167,14 @@ public class FilterTaskFormWidget extends Composite {
         this.assignedList.setValue("");
         this.statusList.setValue("");
         this.descriprionText.setValue("");
+    }
+
+    @UiHandler("btnAdd")
+    public void addClick(ClickEvent event) {
+        TaskDTO taskDTO = new TaskDTO();
+        taskDTO.setAssigned(-1L);
+        taskDTO.setOwner(-1L);
+        viewTaskPanelWidget = new ViewTaskPanelWidget(taskDTO, false, taskTableWidget);
+        viewTaskPanelWidget.show();
     }
 }

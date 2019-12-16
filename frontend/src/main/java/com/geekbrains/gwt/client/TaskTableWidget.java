@@ -4,8 +4,11 @@ import com.geekbrains.gwt.common.dtos.TaskDTO;
 import com.geekbrains.gwt.common.dtos.UserDTO;
 import com.geekbrains.gwt.common.entities.Task;
 import com.google.gwt.cell.client.ActionCell;
+import com.google.gwt.cell.client.CompositeCell;
+import com.google.gwt.cell.client.HasCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.place.impl.AbstractPlaceHistoryMapper;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
@@ -18,8 +21,8 @@ import com.google.gwt.user.client.ui.Widget;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class TaskTableWidget extends Composite {
     @UiField
@@ -27,15 +30,26 @@ public class TaskTableWidget extends Composite {
 
     private TaskClient taskClient;
 
+    private UserClient userClient;
+    List<UserDTO> owners;
+    List<UserDTO> assigners = new ArrayList<>();
+
     @UiTemplate("TaskTable.ui.xml")
     interface ItemsTableBinder extends UiBinder<Widget, TaskTableWidget> {
     }
 
     private static ItemsTableBinder uiBinder = GWT.create(ItemsTableBinder.class);
 
+    private ViewTaskPanelWidget viewTaskPanelWidget;
+
+    private TaskTableWidget taskTableWidget;
+
     public TaskTableWidget() {
+        taskTableWidget = this;
         initWidget(uiBinder.createAndBindUi(this));
 //         table.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.ENABLED);
+
+        userClient = GWT.create(UserClient.class);
 
         TextColumn<TaskDTO> idColumn = new TextColumn<TaskDTO>() {
             @Override
@@ -53,11 +67,35 @@ public class TaskTableWidget extends Composite {
         };
         table.addColumn(captionColumn, "Caption");
 
+
+        userClient.getExecutors(new MethodCallback<List<UserDTO>>() {
+            @Override
+            public void onFailure(Method method, Throwable throwable) {
+                GWT.log(throwable.toString());
+                GWT.log(throwable.getMessage());
+            }
+
+            @Override
+            public void onSuccess(Method method, List<UserDTO> userDTOS) {
+                GWT.log("Recived " + userDTOS.size() + " owners");
+                owners  = new ArrayList<>(userDTOS);
+            }
+        });
         TextColumn<TaskDTO> ownerColumn = new TextColumn<TaskDTO>() {
             @Override
             public String getValue(TaskDTO taskDTO) {
-                return taskDTO.getOwner().getUsername();
-            }
+                if(taskDTO.getOwner() != -1L) {
+                    try {
+                        return owners.stream()
+                                .filter(t -> t.getId().equals(taskDTO.getOwner()))
+                                .findFirst().get()
+                                .getUsername();
+                    } catch (NoSuchElementException e) {
+                        return "";
+                    }
+                }
+                return "";
+            };
         };
         table.addColumn(ownerColumn, "Owner");
 
@@ -70,11 +108,33 @@ public class TaskTableWidget extends Composite {
         };
         table.addColumn(statusColumn, "Status");
 
+        userClient.getInitiators(new MethodCallback<List<UserDTO>>() {
+            @Override
+            public void onFailure(Method method, Throwable throwable) {
+                GWT.log(throwable.toString());
+                GWT.log(throwable.getMessage());
+            }
+
+            @Override
+            public void onSuccess(Method method, List<UserDTO> userDTOS) {
+                GWT.log("Recived " + userDTOS.size() + " assigners");
+                assigners  = new ArrayList<>(userDTOS);
+            }
+        });
         TextColumn<TaskDTO> assignedColumn = new TextColumn<TaskDTO>() {
             @Override
             public String getValue(TaskDTO taskDTO) {
-                UserDTO assigned = taskDTO.getAssigned();
-                return assigned != null ? assigned.getUsername() : null;
+                if(taskDTO.getAssigned() != -1L) {
+                    try{
+                        return owners.stream()
+                                .filter(t -> t.getId().equals(taskDTO.getOwner()) )
+                                .findFirst().get()
+                                .getUsername();
+                    } catch (NoSuchElementException e) {
+                        return "";
+                    }
+                }
+                return "";
             }
         };
         table.addColumn(assignedColumn, "Assigned");
@@ -112,7 +172,46 @@ public class TaskTableWidget extends Composite {
                 return item;
             }
         };
-        table.addColumn(actionColumn, "Actions");
+
+        Column<TaskDTO, TaskDTO> viewColumn = new Column<TaskDTO, TaskDTO>(
+                new ActionCell<TaskDTO>("VIEW", new ActionCell.Delegate<TaskDTO>() {
+                    @Override
+                    public void execute(TaskDTO item) {
+                        viewTaskPanelWidget = new ViewTaskPanelWidget(item, true, taskTableWidget);
+                        viewTaskPanelWidget.show();
+                    }
+                })) {
+            @Override
+            public TaskDTO getValue(TaskDTO item) {
+                return item;
+            }
+        };
+
+        Column<TaskDTO, TaskDTO> editColumn = new Column<TaskDTO, TaskDTO>(
+                new ActionCell<TaskDTO>("EDIT", new ActionCell.Delegate<TaskDTO>() {
+                    @Override
+                    public void execute(TaskDTO item) {
+                        viewTaskPanelWidget = new ViewTaskPanelWidget(item, false, taskTableWidget);
+                        viewTaskPanelWidget.show();
+                    }
+                })) {
+            @Override
+            public TaskDTO getValue(TaskDTO item) {
+                return item;
+            }
+        };
+
+        List<HasCell<TaskDTO, ?>> cells = new LinkedList<HasCell<TaskDTO, ?>>();
+        cells.add(actionColumn);
+        cells.add(viewColumn);
+        cells.add(editColumn);
+        CompositeCell<TaskDTO> cell = new CompositeCell<TaskDTO>(cells);
+        table.addColumn(new Column<TaskDTO, TaskDTO>(cell) {
+            @Override
+            public TaskDTO getValue(TaskDTO object) {
+                return object;
+            }
+        }, "Actions");
 
         table.setColumnWidth(idColumn, 50, Style.Unit.PX);
         table.setColumnWidth(captionColumn, 200, Style.Unit.PX);
@@ -162,4 +261,5 @@ public class TaskTableWidget extends Composite {
             }
         });
     }
+
 }

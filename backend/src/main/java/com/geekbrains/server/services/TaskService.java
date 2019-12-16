@@ -1,5 +1,6 @@
 package com.geekbrains.server.services;
 
+import com.geekbrains.gwt.common.dtos.TaskDTO;
 import com.geekbrains.gwt.common.entities.Task;
 import com.geekbrains.server.repositories.TaskRepository;
 import com.geekbrains.server.repositories.specifications.TaskSpecifications;
@@ -17,10 +18,16 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class TaskService {
     private TaskRepository storage;
+    private UserService userService;
 
     @Autowired
     public void setStorage(TaskRepository storage) {
         this.storage = storage;
+    }
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     public List<Task> getTasks(Map<String, String> params) {

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,6 +47,11 @@ public class UserController {
         return userService.getInitiators().stream()
                 .map(user -> user.toDto())
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping(path = "/users/")
+    public UserDTO showUser(@PathParam("id") Long id) {
+        return userService.getUserById(id).toDto();
     }
 
 }

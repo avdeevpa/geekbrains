@@ -35,6 +35,8 @@
                     <g:VerticalPanel>
                         <g:Button ui:field="btnSubmit" width="100px">Найти</g:Button>
                         <g:Button ui:field="btnClear" width="100px">Очистить</g:Button>
+                        <g:Label text=" " width="100px" height="30px"/>
+                        <g:Button ui:field="btnAdd" width="100px">Создать</g:Button>
                     </g:VerticalPanel>
                 </g:HorizontalPanel>
             </g:FormPanel>

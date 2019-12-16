@@ -5,12 +5,12 @@ import com.geekbrains.gwt.common.entities.Task;
 public class TaskDTO {
     private Long id;
     private String caption;
-    private UserDTO owner;
-    private UserDTO assigned;
+    private Long owner;
+    private Long assigned;
     private String description;
     private Task.Status status;
 
-    public TaskDTO(Long id, String caption, UserDTO owner, UserDTO assigned, String description, Task.Status status) {
+    public TaskDTO(Long id, String caption, Long owner, Long assigned, String description, Task.Status status) {
         this.id = id;
         this.caption = caption;
         this.owner = owner;
@@ -38,19 +38,19 @@ public class TaskDTO {
         this.caption = caption;
     }
 
-    public UserDTO getOwner() {
+    public Long getOwner() {
         return owner;
     }
 
-    public void setOwner(UserDTO owner) {
+    public void setOwner(Long owner) {
         this.owner = owner;
     }
 
-    public UserDTO getAssigned() {
+    public Long getAssigned() {
         return assigned;
     }
 
-    public void setAssigned(UserDTO assigned) {
+    public void setAssigned(Long assigned) {
         this.assigned = assigned;
     }
 
