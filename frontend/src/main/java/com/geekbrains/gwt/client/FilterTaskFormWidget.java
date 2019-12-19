@@ -5,6 +5,7 @@ import com.geekbrains.gwt.common.dtos.UserDTO;
 import com.geekbrains.gwt.common.entities.Task;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.storage.client.Storage;
 import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -95,6 +96,9 @@ public class FilterTaskFormWidget extends Composite {
     private static FilterTaskFormWidget.AddItemFormBinder uiBinder = GWT.create(FilterTaskFormWidget.AddItemFormBinder.class);
 
     public FilterTaskFormWidget(TaskTableWidget itemsTableWidget) {
+        String token = Storage.getLocalStorageIfSupported().getItem("jwt");
+        GWT.log("STORAGE: " + token);
+
         this.initWidget(uiBinder.createAndBindUi(this));
         this.form.setAction(Defaults.getServiceRoot().concat("tasks"));
 
@@ -106,12 +110,11 @@ public class FilterTaskFormWidget extends Composite {
 
         userClient = GWT.create(UserClient.class);
 
-        userClient.getInitiators(new MethodCallback<List<UserDTO>>() {
+        userClient.getInitiators(token, new MethodCallback<List<UserDTO>>() {
             @Override
             public void onFailure(Method method, Throwable throwable) {
                 GWT.log(throwable.toString());
                 GWT.log(throwable.getMessage());
-                Window.alert("Невозможно получить список Initiators: Сервер не отвечает");
             }
 
             @Override
@@ -125,12 +128,11 @@ public class FilterTaskFormWidget extends Composite {
             }
         });
 
-        userClient.getExecutors(new MethodCallback<List<UserDTO>>() {
+        userClient.getExecutors(token, new MethodCallback<List<UserDTO>>() {
             @Override
             public void onFailure(Method method, Throwable throwable) {
                 GWT.log(throwable.toString());
                 GWT.log(throwable.getMessage());
-                Window.alert("Невозможно получить список Initiators: Сервер не отвечает");
             }
 
             @Override

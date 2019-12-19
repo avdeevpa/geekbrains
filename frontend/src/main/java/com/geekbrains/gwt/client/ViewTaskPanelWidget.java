@@ -5,6 +5,7 @@ import com.geekbrains.gwt.common.dtos.UserDTO;
 import com.geekbrains.gwt.common.entities.Task;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.storage.client.Storage;
 import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -76,6 +77,9 @@ public class ViewTaskPanelWidget extends Composite {
     private static ViewTaskPanelWidget.ViewTaskPanelBinder uiBinder = GWT.create(ViewTaskPanelWidget.ViewTaskPanelBinder.class);
 
     public ViewTaskPanelWidget(TaskDTO task, boolean readOnly, TaskTableWidget taskTableWidget) {
+        String token = Storage.getLocalStorageIfSupported().getItem("jwt");
+        GWT.log("STORAGE: " + token);
+
         this.taskTableWidget = taskTableWidget;
         this.initWidget(uiBinder.createAndBindUi(this));
 
@@ -113,7 +117,7 @@ public class ViewTaskPanelWidget extends Composite {
 
         userClient = GWT.create(UserClient.class);
 
-        userClient.getInitiators(new MethodCallback<List<UserDTO>>() {
+        userClient.getInitiators(token, new MethodCallback<List<UserDTO>>() {
             @Override
             public void onFailure(Method method, Throwable throwable) {
                 GWT.log(throwable.toString());
@@ -138,7 +142,7 @@ public class ViewTaskPanelWidget extends Composite {
             }
         });
 
-        userClient.getExecutors(new MethodCallback<List<UserDTO>>() {
+        userClient.getExecutors(token, new MethodCallback<List<UserDTO>>() {
             @Override
             public void onFailure(Method method, Throwable throwable) {
                 GWT.log(throwable.toString());

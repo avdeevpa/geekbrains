@@ -5,6 +5,7 @@ import org.fusesource.restygwt.client.MethodCallback;
 import org.fusesource.restygwt.client.RestService;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import java.util.List;
@@ -13,17 +14,17 @@ import java.util.List;
 public interface UserClient extends RestService {
     @GET
     @Path("/")
-    void getAllUsers(MethodCallback<List<UserDTO>> items);
+    void getAllUsers(@HeaderParam("Authorization") String token, MethodCallback<List<UserDTO>> items);
 
     @GET
     @Path("executors")
-    void getExecutors(MethodCallback<List<UserDTO>> items);
+    void getExecutors(@HeaderParam("Authorization") String token, MethodCallback<List<UserDTO>> items);
 
     @GET
     @Path("initiators")
-    void getInitiators(MethodCallback<List<UserDTO>> items);
+    void getInitiators(@HeaderParam("Authorization") String token, MethodCallback<List<UserDTO>> items);
 
     @GET
     @Path("id={id}")
-    void getUser(@PathParam("id") Long id, MethodCallback<UserDTO> item);
+    void getUser(@HeaderParam("Authorization") String token, @PathParam("id") Long id, MethodCallback<UserDTO> item);
 }

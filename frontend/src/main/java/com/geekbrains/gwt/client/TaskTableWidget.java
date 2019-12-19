@@ -9,6 +9,7 @@ import com.google.gwt.cell.client.HasCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.place.impl.AbstractPlaceHistoryMapper;
+import com.google.gwt.storage.client.Storage;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
@@ -45,6 +46,9 @@ public class TaskTableWidget extends Composite {
     private TaskTableWidget taskTableWidget;
 
     public TaskTableWidget() {
+        String token = Storage.getLocalStorageIfSupported().getItem("jwt");
+        GWT.log("STORAGE: " + token);
+
         taskTableWidget = this;
         initWidget(uiBinder.createAndBindUi(this));
 //         table.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.ENABLED);
@@ -68,7 +72,7 @@ public class TaskTableWidget extends Composite {
         table.addColumn(captionColumn, "Caption");
 
 
-        userClient.getExecutors(new MethodCallback<List<UserDTO>>() {
+        userClient.getExecutors(token, new MethodCallback<List<UserDTO>>() {
             @Override
             public void onFailure(Method method, Throwable throwable) {
                 GWT.log(throwable.toString());
@@ -108,7 +112,8 @@ public class TaskTableWidget extends Composite {
         };
         table.addColumn(statusColumn, "Status");
 
-        userClient.getInitiators(new MethodCallback<List<UserDTO>>() {
+
+        userClient.getInitiators(token, new MethodCallback<List<UserDTO>>() {
             @Override
             public void onFailure(Method method, Throwable throwable) {
                 GWT.log(throwable.toString());
@@ -153,7 +158,7 @@ public class TaskTableWidget extends Composite {
                 new ActionCell<TaskDTO>("REMOVE", new ActionCell.Delegate<TaskDTO>() {
                     @Override
                     public void execute(TaskDTO item) {
-                        taskClient.removeTask(item.getId().toString(), new MethodCallback<Void>() {
+                        taskClient.removeTask(token, item.getId().toString(), new MethodCallback<Void>() {
                             @Override
                             public void onFailure(Method method, Throwable throwable) {
                                 GWT.log(throwable.toString());
@@ -225,12 +230,13 @@ public class TaskTableWidget extends Composite {
     }
 
     public void refresh() {
-        taskClient.getAllTasks(new MethodCallback<List<TaskDTO>>() {
+        String token = Storage.getLocalStorageIfSupported().getItem("jwt");
+        GWT.log("STORAGE: " + token);
+        taskClient.getAllTasks(token, new MethodCallback<List<TaskDTO>>() {
             @Override
             public void onFailure(Method method, Throwable throwable) {
                 GWT.log(throwable.toString());
                 GWT.log(throwable.getMessage());
-                Window.alert("Невозможно получить список items: Сервер не отвечает");
             }
 
             @Override
@@ -244,12 +250,13 @@ public class TaskTableWidget extends Composite {
     }
 
     public void update(String id, String caption, String owner, String assigned, String status, String descriprion) {
-        taskClient.getTasks(id, caption, owner, assigned, status, descriprion, new MethodCallback<List<TaskDTO>>() {
+        String token = Storage.getLocalStorageIfSupported().getItem("jwt");
+        GWT.log("STORAGE: " + token);
+        taskClient.getTasks(token, id, caption, owner, assigned, status, descriprion, new MethodCallback<List<TaskDTO>>() {
             @Override
             public void onFailure(Method method, Throwable throwable) {
                 GWT.log(throwable.toString());
                 GWT.log(throwable.getMessage());
-                Window.alert("Невозможно получить список: Сервер не отвечает");
             }
 
             @Override
