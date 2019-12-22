@@ -116,13 +116,10 @@ public class ViewTaskPanelWidget extends Composite {
             this.captionText.setValue(task.getCaption());
             this.statusList.setValue(task.getStatus().toString());
             this.descriptionText.setValue(task.getDescription());
-            this.form.setAction(Defaults.getServiceRoot().concat("tasks").concat("/put"));
             //this.form.setMethod("POST");
         } else {
             this.idLabel.setVisible(false);
             this.idText.setVisible(false);
-            this.form.setAction(Defaults.getServiceRoot().concat("tasks").concat("/post"));
-            this.form.setMethod("POST");
         }
 
         List<String> statusVals = Stream.of(Task.Status.values())

@@ -31,6 +31,6 @@ public interface TaskClient extends RestService {
     void removeTask(@HeaderParam("Authorization") String token, @PathParam("id") String id, MethodCallback<Void> result);
 
     @POST
-    @Path("tasks/post")
+    @Path("tasks")
     void addTask(@HeaderParam("Authorization") String token, @BeanParam() TaskDTO taskDTO, MethodCallback<Void> result);
 }

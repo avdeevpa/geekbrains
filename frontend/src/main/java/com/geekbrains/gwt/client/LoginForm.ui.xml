@@ -16,8 +16,7 @@
                     <g:Button ui:field="btnSubmit">Войти</g:Button>
                 </g:VerticalPanel>
                 <g:VerticalPanel ui:field="formLogout" spacing="10">
-                    <g:Label text="Вы вошли как:" width="100px"/>
-                    <g:Label ui:field="labelUsername" width="100px"/>
+                    <g:Label text="Вы вошли" width="100px"/>
                     <g:Button ui:field="btnLogout">Выйти</g:Button>
                 </g:VerticalPanel>
             </g:HorizontalPanel>

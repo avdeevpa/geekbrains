@@ -77,33 +77,17 @@ public class TaskTableWidget extends Composite {
         };
         table.addColumn(captionColumn, "Caption");
 
-        userClient.getExecutors(token, new MethodCallback<List<UserDTO>>() {
-            @Override
-            public void onFailure(Method method, Throwable throwable) {
-                GWT.log(throwable.toString());
-                GWT.log(throwable.getMessage());
-            }
-
-            @Override
-            public void onSuccess(Method method, List<UserDTO> userDTOS) {
-                GWT.log("Recived " + userDTOS.size() + " owners");
-                owners  = new ArrayList<>(userDTOS);
-            }
-        });
         TextColumn<TaskDTO> ownerColumn = new TextColumn<TaskDTO>() {
             @Override
             public String getValue(TaskDTO taskDTO) {
+                String owner = "";
                 if(taskDTO.getOwner() != -1L) {
-                    try {
-                        return owners.stream()
+                    owner = owners.stream()
                                 .filter(t -> t.getId().equals(taskDTO.getOwner()))
                                 .findFirst().get()
                                 .getUsername();
-                    } catch (NoSuchElementException e) {
-                        return "";
-                    }
                 }
-                return "";
+                return owner;
             };
         };
         table.addColumn(ownerColumn, "Owner");
@@ -117,34 +101,17 @@ public class TaskTableWidget extends Composite {
         };
         table.addColumn(statusColumn, "Status");
 
-
-        userClient.getInitiators(token, new MethodCallback<List<UserDTO>>() {
-            @Override
-            public void onFailure(Method method, Throwable throwable) {
-                GWT.log(throwable.toString());
-                GWT.log(throwable.getMessage());
-            }
-
-            @Override
-            public void onSuccess(Method method, List<UserDTO> userDTOS) {
-                GWT.log("Recived " + userDTOS.size() + " assigners");
-                assigners  = new ArrayList<>(userDTOS);
-            }
-        });
         TextColumn<TaskDTO> assignedColumn = new TextColumn<TaskDTO>() {
             @Override
             public String getValue(TaskDTO taskDTO) {
+                String assignee = "";
                 if(taskDTO.getAssigned() != -1L) {
-                    try{
-                        return owners.stream()
-                                .filter(t -> t.getId().equals(taskDTO.getOwner()) )
-                                .findFirst().get()
-                                .getUsername();
-                    } catch (NoSuchElementException e) {
-                        return "";
-                    }
+                    assignee = assigners.stream()
+                            .filter(t -> t.getId().equals(taskDTO.getAssigned()) )
+                            .findFirst().get()
+                            .getUsername();
                 }
-                return "";
+                return assignee;
             }
         };
         table.addColumn(assignedColumn, "Assigned");
@@ -240,6 +207,34 @@ public class TaskTableWidget extends Composite {
                         Storage.getLocalStorageIfSupported().getItem("jwt") :
                         "empty";
         GWT.log("STORAGE: " + token);
+
+        userClient.getInitiators(token, new MethodCallback<List<UserDTO>>() {
+            @Override
+            public void onFailure(Method method, Throwable throwable) {
+                GWT.log(throwable.toString());
+                GWT.log(throwable.getMessage());
+            }
+
+            @Override
+            public void onSuccess(Method method, List<UserDTO> userDTOS) {
+                GWT.log("Recived " + userDTOS.size() + " owners");
+                owners  = new ArrayList<>(userDTOS);
+            }
+        });
+
+        userClient.getExecutors(token, new MethodCallback<List<UserDTO>>() {
+            @Override
+            public void onFailure(Method method, Throwable throwable) {
+                GWT.log(throwable.toString());
+                GWT.log(throwable.getMessage());
+            }
+
+            @Override
+            public void onSuccess(Method method, List<UserDTO> userDTOS) {
+                GWT.log("Recived " + userDTOS.size() + " assigners");
+                assigners  = new ArrayList<>(userDTOS);
+            }
+        });
 
         taskClient.getAllTasks(token, new MethodCallback<List<TaskDTO>>() {
             @Override

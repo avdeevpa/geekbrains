@@ -31,9 +31,6 @@ public class LoginForm extends Composite {
     @UiField
     VerticalPanel formLogout;
 
-    @UiField
-    Label labelUsername;
-
     @UiTemplate("LoginForm.ui.xml")
     interface LoginFormBinder extends UiBinder<Widget, LoginForm> {
     }
@@ -55,7 +52,6 @@ public class LoginForm extends Composite {
         } else {
             this.formLogin.setVisible(false);
             this.formLogout.setVisible(true);
-            this.labelUsername.setText("Under construction");
         }
 
         this.taskTableWidget = taskTableWidget;
@@ -89,7 +85,6 @@ public class LoginForm extends Composite {
 
                 formLogin.setVisible(false);
                 formLogout.setVisible(true);
-                labelUsername.setText(textUsername.getValue());
 
                 taskTableWidget.refresh();
                 filterTaskFormWidget.init();
