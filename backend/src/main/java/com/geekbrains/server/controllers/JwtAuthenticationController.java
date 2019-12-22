@@ -5,6 +5,7 @@ import com.geekbrains.gwt.common.dtos.JwtAuthResponseDto;
 import com.geekbrains.gwt.common.dtos.UserSecureDto;
 import com.geekbrains.server.configs.JwtTokenUtil;
 import com.geekbrains.server.services.JwtUserDetailsService;
+import oracle.jdbc.proxy.annotation.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

@@ -24,9 +24,9 @@ public class TaskController {
         Task task = new Task();
         task.setId(taskDTO.getId());
         task.setCaption(taskDTO.getCaption());
-        task.setOwner(taskDTO.getOwner() != -1 ? userService.getUserById(taskDTO.getOwner()) : null);
-        task.setAssigned(taskDTO.getAssigned() != -1 ? userService.getUserById(taskDTO.getAssigned()) : null);
-        task.setStatus(taskDTO.getStatus());
+        task.setOwner(taskDTO.getOwner() != null ? userService.getUserById(taskDTO.getOwner()) : null);
+        task.setAssigned(taskDTO.getAssigned() != null ? userService.getUserById(taskDTO.getAssigned()) : null);
+        task.setStatus(taskDTO.getStatus() != null ? taskDTO.getStatus() : Task.Status.CREATED);
         task.setDescription(taskDTO.getDescription());
 
         return task;
@@ -62,7 +62,7 @@ public class TaskController {
     }
 
     @PostMapping("/tasks/post")
-    public void addTask(@ModelAttribute("task") TaskDTO taskDTO) {
+    public void addTask(@RequestBody TaskDTO taskDTO) {
         taskService.addEdtTasks(parseDTO(taskDTO));
     }
 }

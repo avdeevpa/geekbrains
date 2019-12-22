@@ -32,7 +32,7 @@ public class TaskTableWidget extends Composite {
     private TaskClient taskClient;
 
     private UserClient userClient;
-    List<UserDTO> owners;
+    List<UserDTO> owners = new ArrayList<>();
     List<UserDTO> assigners = new ArrayList<>();
 
     @UiTemplate("TaskTable.ui.xml")
@@ -45,8 +45,14 @@ public class TaskTableWidget extends Composite {
 
     private TaskTableWidget taskTableWidget;
 
+    private String token;
+
     public TaskTableWidget() {
-        String token = Storage.getLocalStorageIfSupported().getItem("jwt");
+        String token =
+                Storage.getLocalStorageIfSupported().getItem("jwt") != null ?
+                        Storage.getLocalStorageIfSupported().getItem("jwt") :
+                "empty";
+        this.token = token;
         GWT.log("STORAGE: " + token);
 
         taskTableWidget = this;
@@ -70,7 +76,6 @@ public class TaskTableWidget extends Composite {
             }
         };
         table.addColumn(captionColumn, "Caption");
-
 
         userClient.getExecutors(token, new MethodCallback<List<UserDTO>>() {
             @Override
@@ -230,8 +235,12 @@ public class TaskTableWidget extends Composite {
     }
 
     public void refresh() {
-        String token = Storage.getLocalStorageIfSupported().getItem("jwt");
+        String token =
+                Storage.getLocalStorageIfSupported().getItem("jwt") != null ?
+                        Storage.getLocalStorageIfSupported().getItem("jwt") :
+                        "empty";
         GWT.log("STORAGE: " + token);
+
         taskClient.getAllTasks(token, new MethodCallback<List<TaskDTO>>() {
             @Override
             public void onFailure(Method method, Throwable throwable) {

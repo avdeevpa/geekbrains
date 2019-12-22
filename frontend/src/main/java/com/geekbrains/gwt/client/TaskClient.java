@@ -29,4 +29,8 @@ public interface TaskClient extends RestService {
     @DELETE
     @Path("tasks?id={id}")
     void removeTask(@HeaderParam("Authorization") String token, @PathParam("id") String id, MethodCallback<Void> result);
+
+    @POST
+    @Path("tasks/post")
+    void addTask(@HeaderParam("Authorization") String token, @BeanParam() TaskDTO taskDTO, MethodCallback<Void> result);
 }

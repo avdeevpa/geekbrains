@@ -3,17 +3,24 @@
 
     <g:DecoratorPanel>
         <g:FormPanel ui:field="form" method="POST">
-            <g:VerticalPanel spacing="10">
-                <g:HorizontalPanel>
-                    <g:Label text="Username:" width="100px"/>
-                    <g:TextBox name="username" ui:field="textUsername" width="200px"/>
-                </g:HorizontalPanel>
-                <g:HorizontalPanel>
-                    <g:Label text="Password:" width="100px"/>
-                    <g:TextBox name="password" ui:field="textPassword" width="200px"/>
-                </g:HorizontalPanel>
-                <g:Button ui:field="btnSubmit">Войти</g:Button>
-            </g:VerticalPanel>
+            <g:HorizontalPanel>
+                <g:VerticalPanel ui:field="formLogin" spacing="10">
+                    <g:HorizontalPanel>
+                        <g:Label text="Username:" width="100px"/>
+                        <g:TextBox name="username" ui:field="textUsername" width="200px"/>
+                    </g:HorizontalPanel>
+                    <g:HorizontalPanel>
+                        <g:Label text="Password:" width="100px"/>
+                        <g:TextBox name="password" ui:field="textPassword" width="200px"/>
+                    </g:HorizontalPanel>
+                    <g:Button ui:field="btnSubmit">Войти</g:Button>
+                </g:VerticalPanel>
+                <g:VerticalPanel ui:field="formLogout" spacing="10">
+                    <g:Label text="Вы вошли как:" width="100px"/>
+                    <g:Label ui:field="labelUsername" width="100px"/>
+                    <g:Button ui:field="btnLogout">Выйти</g:Button>
+                </g:VerticalPanel>
+            </g:HorizontalPanel>
         </g:FormPanel>
     </g:DecoratorPanel>
 </ui:UiBinder>

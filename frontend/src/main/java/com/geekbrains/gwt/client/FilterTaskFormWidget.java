@@ -96,12 +96,20 @@ public class FilterTaskFormWidget extends Composite {
     private static FilterTaskFormWidget.AddItemFormBinder uiBinder = GWT.create(FilterTaskFormWidget.AddItemFormBinder.class);
 
     public FilterTaskFormWidget(TaskTableWidget itemsTableWidget) {
-        String token = Storage.getLocalStorageIfSupported().getItem("jwt");
-        GWT.log("STORAGE: " + token);
-
         this.initWidget(uiBinder.createAndBindUi(this));
         this.form.setAction(Defaults.getServiceRoot().concat("tasks"));
 
+        this.init();
+
+        this.taskTableWidget = itemsTableWidget;
+    }
+
+    public void init() {
+        String token =
+                Storage.getLocalStorageIfSupported().getItem("jwt") != null ?
+                        Storage.getLocalStorageIfSupported().getItem("jwt") :
+                        "empty";
+        GWT.log("STORAGE: " + token);
         List<String> statusVals = Stream.of(Task.Status.values())
                 .map(Task.Status::name)
                 .collect(Collectors.toList());
@@ -145,8 +153,6 @@ public class FilterTaskFormWidget extends Composite {
                 assignedList.setAcceptableValues(ownerVals);
             }
         });
-
-        this.taskTableWidget = itemsTableWidget;
     }
 
     @UiHandler("btnSubmit")
@@ -179,4 +185,5 @@ public class FilterTaskFormWidget extends Composite {
         viewTaskPanelWidget = new ViewTaskPanelWidget(taskDTO, false, taskTableWidget);
         viewTaskPanelWidget.show();
     }
+
 }

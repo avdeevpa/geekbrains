@@ -72,13 +72,29 @@ public class ViewTaskPanelWidget extends Composite {
 
     private UserClient userClient;
 
+    private TaskClient taskClient;
+
+    private String token;
+
     private TaskTableWidget taskTableWidget;
+
+    private ViewTaskPanelWidget viewTaskPanelWidget;
 
     private static ViewTaskPanelWidget.ViewTaskPanelBinder uiBinder = GWT.create(ViewTaskPanelWidget.ViewTaskPanelBinder.class);
 
     public ViewTaskPanelWidget(TaskDTO task, boolean readOnly, TaskTableWidget taskTableWidget) {
-        String token = Storage.getLocalStorageIfSupported().getItem("jwt");
+        String token =
+                Storage.getLocalStorageIfSupported().getItem("jwt") != null ?
+                        Storage.getLocalStorageIfSupported().getItem("jwt") :
+                        "empty";
+        this.token = token;
         GWT.log("STORAGE: " + token);
+
+        viewTaskPanelWidget = this;
+
+        userClient = GWT.create(UserClient.class);
+
+        taskClient = GWT.create(TaskClient.class);
 
         this.taskTableWidget = taskTableWidget;
         this.initWidget(uiBinder.createAndBindUi(this));
@@ -101,7 +117,7 @@ public class ViewTaskPanelWidget extends Composite {
             this.statusList.setValue(task.getStatus().toString());
             this.descriptionText.setValue(task.getDescription());
             this.form.setAction(Defaults.getServiceRoot().concat("tasks").concat("/put"));
-            this.form.setMethod("POST");
+            //this.form.setMethod("POST");
         } else {
             this.idLabel.setVisible(false);
             this.idText.setVisible(false);
@@ -114,8 +130,6 @@ public class ViewTaskPanelWidget extends Composite {
                 .collect(Collectors.toList());
         this.statusList.setValue("");
         this.statusList.setAcceptableValues(statusVals);
-
-        userClient = GWT.create(UserClient.class);
 
         userClient.getInitiators(token, new MethodCallback<List<UserDTO>>() {
             @Override
@@ -186,14 +200,30 @@ public class ViewTaskPanelWidget extends Composite {
 
     @UiHandler("saveButton")
     public void saveButtonClick(ClickEvent event) {
-        this.ownerList.setName("owner");
-        this.assignedList.setName("assigned");
-        this.form.submit();
+        TaskDTO taskDTO = new TaskDTO(
+                this.idText.getValue() != "" ? Long.parseLong(this.idText.getValue()) : null,
+                this.captionText.getValue(),
+                this.ownerList.getSelectedIndex() != 0 ? Long.parseLong(this.ownerList.getValue(this.ownerList.getSelectedIndex())) : null,
+                this.assignedList.getSelectedIndex() != 0 ? Long.parseLong(this.assignedList.getValue(this.assignedList.getSelectedIndex())) : null,
+                this.descriptionText.getValue(),
+                this.statusList.getValue() != "" ? Task.Status.valueOf(this.statusList.getValue()) : null
+        );
+
+        taskClient.addTask(token, taskDTO, new MethodCallback<Void>() {
+            @Override
+            public void onFailure(Method method, Throwable throwable) {
+                GWT.log(throwable.toString());
+                GWT.log(throwable.getMessage());
+            }
+
+            @Override
+            public void onSuccess(Method method, Void aVoid) {
+                GWT.log("Success: task added");
+                taskTableWidget.refresh();
+                viewTaskPanelWidget.hide();
+            }
+        });
+
     }
 
-    @UiHandler("form")
-    public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
-        taskTableWidget.refresh();
-        this.hide();
-    }
 }

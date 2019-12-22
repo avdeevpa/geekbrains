@@ -9,9 +9,10 @@ public class WebApp implements EntryPoint {
     public void onModuleLoad() {
         Defaults.setServiceRoot("http://localhost:8189/gwt-rest");
         TaskTableWidget taskTableWidget = new TaskTableWidget();
+        FilterTaskFormWidget filterTaskFormWidget = new FilterTaskFormWidget(taskTableWidget);
 
         VerticalPanel verticalPanel = new VerticalPanel();
-        verticalPanel.add(new FilterTaskFormWidget(taskTableWidget));
+        verticalPanel.add(filterTaskFormWidget);
         verticalPanel.add(taskTableWidget);
 
         // Create a tab panel
@@ -19,16 +20,14 @@ public class WebApp implements EntryPoint {
         tabPanel.setAnimationDuration(100);
         tabPanel.getElement().getStyle().setMarginBottom(10.0, Style.Unit.PX);
 
-        LoginForm loginForm = new LoginForm(tabPanel, taskTableWidget);
-        tabPanel.add(loginForm, "Login");
+        LoginForm loginForm = new LoginForm(tabPanel, taskTableWidget, filterTaskFormWidget);
+        tabPanel.add(loginForm, "Session");
 
-        tabPanel.add(verticalPanel, "Main Page");
+        tabPanel.add(verticalPanel, "Task control");
         tabPanel.setHeight("800px");
 
         tabPanel.selectTab(0);
         tabPanel.ensureDebugId("cwTabPanel");
-        tabPanel.getTabWidget(0).setVisible(false);
-        tabPanel.getTabWidget(1).setVisible(false);
 
         RootPanel.get().add(tabPanel);
     }

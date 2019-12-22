@@ -17,7 +17,8 @@ public class AppConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:8888")
-                .allowedOrigins("http://127.0.0.1:8888");
+                .allowedOrigins("http://127.0.0.1:8888")
+                .allowedMethods("POST", "DELETE", "PUT", "GET");
     }
 
     @Override

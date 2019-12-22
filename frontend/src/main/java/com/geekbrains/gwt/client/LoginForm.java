@@ -25,19 +25,41 @@ public class LoginForm extends Composite {
     @UiField
     TextBox textPassword;
 
+    @UiField
+    VerticalPanel formLogin;
+
+    @UiField
+    VerticalPanel formLogout;
+
+    @UiField
+    Label labelUsername;
+
     @UiTemplate("LoginForm.ui.xml")
     interface LoginFormBinder extends UiBinder<Widget, LoginForm> {
     }
 
     private TaskTableWidget taskTableWidget;
+    private FilterTaskFormWidget filterTaskFormWidget;
     private TabLayoutPanel tabPanel;
 
     private static LoginForm.LoginFormBinder uiBinder = GWT.create(LoginForm.LoginFormBinder.class);
 
-    public LoginForm(TabLayoutPanel tabPanel, TaskTableWidget taskTableWidget) {
+    public LoginForm(TabLayoutPanel tabPanel, TaskTableWidget taskTableWidget, FilterTaskFormWidget filterTaskFormWidget) {
         this.initWidget(uiBinder.createAndBindUi(this));
         this.form.setAction(Defaults.getServiceRoot().concat("items"));
+
+        String token = Storage.getLocalStorageIfSupported().getItem("jwt");
+        if (token == null) {
+            this.formLogin.setVisible(true);
+            this.formLogout.setVisible(false);
+        } else {
+            this.formLogin.setVisible(false);
+            this.formLogout.setVisible(true);
+            this.labelUsername.setText("Under construction");
+        }
+
         this.taskTableWidget = taskTableWidget;
+        this.filterTaskFormWidget = filterTaskFormWidget;
         this.tabPanel = tabPanel;
     }
 
@@ -64,8 +86,36 @@ public class LoginForm extends Composite {
             public void onSuccess(Method method, JwtAuthResponseDto jwtAuthResponseDto) {
                 GWT.log(jwtAuthResponseDto.getToken());
                 Storage.getLocalStorageIfSupported().setItem("jwt", "Bearer " +  jwtAuthResponseDto.getToken());
+
+                formLogin.setVisible(false);
+                formLogout.setVisible(true);
+                labelUsername.setText(textUsername.getValue());
+
                 taskTableWidget.refresh();
+                filterTaskFormWidget.init();
                 tabPanel.selectTab(1);
+            }
+        });
+    }
+
+    @UiHandler("btnLogout")
+    public void logoutClick(ClickEvent event) {
+        AuthClient authClient = GWT.create(AuthClient.class);
+        authClient.logout(new MethodCallback<JwtAuthResponseDto>() {
+            @Override
+            public void onFailure(Method method, Throwable throwable) {
+                GWT.log(method.getResponse().getText());
+                Storage.getLocalStorageIfSupported().clear();
+                formLogin.setVisible(true);
+                formLogout.setVisible(false);
+            }
+
+            @Override
+            public void onSuccess(Method method, JwtAuthResponseDto jwtAuthResponseDto) {
+                GWT.log(method.getResponse().getText());
+                Storage.getLocalStorageIfSupported().clear();
+                formLogin.setVisible(true);
+                formLogout.setVisible(false);
             }
         });
     }
