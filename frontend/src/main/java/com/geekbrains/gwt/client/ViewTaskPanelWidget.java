@@ -5,6 +5,7 @@ import com.geekbrains.gwt.common.dtos.UserDTO;
 import com.geekbrains.gwt.common.entities.Task;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.storage.client.Storage;
 import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -71,11 +72,30 @@ public class ViewTaskPanelWidget extends Composite {
 
     private UserClient userClient;
 
+    private TaskClient taskClient;
+
+    private String token;
+
     private TaskTableWidget taskTableWidget;
+
+    private ViewTaskPanelWidget viewTaskPanelWidget;
 
     private static ViewTaskPanelWidget.ViewTaskPanelBinder uiBinder = GWT.create(ViewTaskPanelWidget.ViewTaskPanelBinder.class);
 
     public ViewTaskPanelWidget(TaskDTO task, boolean readOnly, TaskTableWidget taskTableWidget) {
+        String token =
+                Storage.getLocalStorageIfSupported().getItem("jwt") != null ?
+                        Storage.getLocalStorageIfSupported().getItem("jwt") :
+                        "empty";
+        this.token = token;
+        GWT.log("STORAGE: " + token);
+
+        viewTaskPanelWidget = this;
+
+        userClient = GWT.create(UserClient.class);
+
+        taskClient = GWT.create(TaskClient.class);
+
         this.taskTableWidget = taskTableWidget;
         this.initWidget(uiBinder.createAndBindUi(this));
 
@@ -96,13 +116,10 @@ public class ViewTaskPanelWidget extends Composite {
             this.captionText.setValue(task.getCaption());
             this.statusList.setValue(task.getStatus().toString());
             this.descriptionText.setValue(task.getDescription());
-            this.form.setAction(Defaults.getServiceRoot().concat("tasks").concat("/put"));
-            this.form.setMethod("POST");
+            //this.form.setMethod("POST");
         } else {
             this.idLabel.setVisible(false);
             this.idText.setVisible(false);
-            this.form.setAction(Defaults.getServiceRoot().concat("tasks").concat("/post"));
-            this.form.setMethod("POST");
         }
 
         List<String> statusVals = Stream.of(Task.Status.values())
@@ -111,9 +128,7 @@ public class ViewTaskPanelWidget extends Composite {
         this.statusList.setValue("");
         this.statusList.setAcceptableValues(statusVals);
 
-        userClient = GWT.create(UserClient.class);
-
-        userClient.getInitiators(new MethodCallback<List<UserDTO>>() {
+        userClient.getInitiators(token, new MethodCallback<List<UserDTO>>() {
             @Override
             public void onFailure(Method method, Throwable throwable) {
                 GWT.log(throwable.toString());
@@ -138,7 +153,7 @@ public class ViewTaskPanelWidget extends Composite {
             }
         });
 
-        userClient.getExecutors(new MethodCallback<List<UserDTO>>() {
+        userClient.getExecutors(token, new MethodCallback<List<UserDTO>>() {
             @Override
             public void onFailure(Method method, Throwable throwable) {
                 GWT.log(throwable.toString());
@@ -182,14 +197,30 @@ public class ViewTaskPanelWidget extends Composite {
 
     @UiHandler("saveButton")
     public void saveButtonClick(ClickEvent event) {
-        this.ownerList.setName("owner");
-        this.assignedList.setName("assigned");
-        this.form.submit();
+        TaskDTO taskDTO = new TaskDTO(
+                this.idText.getValue() != "" ? Long.parseLong(this.idText.getValue()) : null,
+                this.captionText.getValue(),
+                this.ownerList.getSelectedIndex() != 0 ? Long.parseLong(this.ownerList.getValue(this.ownerList.getSelectedIndex())) : null,
+                this.assignedList.getSelectedIndex() != 0 ? Long.parseLong(this.assignedList.getValue(this.assignedList.getSelectedIndex())) : null,
+                this.descriptionText.getValue(),
+                this.statusList.getValue() != "" ? Task.Status.valueOf(this.statusList.getValue()) : null
+        );
+
+        taskClient.addTask(token, taskDTO, new MethodCallback<Void>() {
+            @Override
+            public void onFailure(Method method, Throwable throwable) {
+                GWT.log(throwable.toString());
+                GWT.log(throwable.getMessage());
+            }
+
+            @Override
+            public void onSuccess(Method method, Void aVoid) {
+                GWT.log("Success: task added");
+                taskTableWidget.refresh();
+                viewTaskPanelWidget.hide();
+            }
+        });
+
     }
 
-    @UiHandler("form")
-    public void onSubmitComplete(FormPanel.SubmitCompleteEvent event) {
-        taskTableWidget.refresh();
-        this.hide();
-    }
 }

@@ -4,21 +4,19 @@ import com.geekbrains.gwt.common.dtos.TaskDTO;
 import org.fusesource.restygwt.client.MethodCallback;
 import org.fusesource.restygwt.client.RestService;
 
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
 import java.util.List;
 
 @Path("/")
 public interface TaskClient extends RestService {
     @GET
     @Path("tasks")
-    void getAllTasks(MethodCallback<List<TaskDTO>> items);
+    void getAllTasks(@HeaderParam("Authorization") String token, MethodCallback<List<TaskDTO>> items);
 
     @GET
     @Path("tasks?id={id}&caption={caption}&owner={owner}&assigned={assigned}&status={status}&descriprion={descriprion}")
     void getTasks(
+            @HeaderParam("Authorization") String token,
             @PathParam("id") String id,
             @PathParam("caption") String caption,
             @PathParam("owner") String owner,
@@ -30,5 +28,9 @@ public interface TaskClient extends RestService {
 
     @DELETE
     @Path("tasks?id={id}")
-    void removeTask(@PathParam("id") String id, MethodCallback<Void> result);
+    void removeTask(@HeaderParam("Authorization") String token, @PathParam("id") String id, MethodCallback<Void> result);
+
+    @POST
+    @Path("tasks")
+    void addTask(@HeaderParam("Authorization") String token, @BeanParam() TaskDTO taskDTO, MethodCallback<Void> result);
 }

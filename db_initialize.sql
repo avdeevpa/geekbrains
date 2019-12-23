@@ -86,10 +86,10 @@ CREATE SEQUENCE HIBERNATE.S_USERS
   NOORDER;
 
 --select * from hibernate.roles;
-insert into hibernate.roles(id, name, description) values
-  (hibernate.s_roles.nextval, 'Admin', 'System administrator');
-insert into hibernate.roles(id, name, description) values
-  (hibernate.s_roles.nextval, 'User', 'Users');;
+insert into hibernate.roles(id, name, description, password) values
+  (hibernate.s_roles.nextval, 'Admin', 'System administrator', '$2a$10$2gZ/WVDGzKiGojZIx7wQcuAo5z9Ho4.W4qff3w4/vszEuKXRN0hoy');
+insert into hibernate.roles(id, name, description, password) values
+  (hibernate.s_roles.nextval, 'User', 'Users', '$2a$10$2gZ/WVDGzKiGojZIx7wQcuAo5z9Ho4.W4qff3w4/vszEuKXRN0hoy');
 
 --select * from hibernate.users;
 insert into hibernate.users(id, username, password, can_initiate, can_execute) values

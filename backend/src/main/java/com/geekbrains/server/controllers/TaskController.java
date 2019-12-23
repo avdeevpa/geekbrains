@@ -2,7 +2,6 @@ package com.geekbrains.server.controllers;
 
 import com.geekbrains.gwt.common.dtos.TaskDTO;
 import com.geekbrains.gwt.common.entities.Task;
-import com.geekbrains.gwt.common.entities.User;
 import com.geekbrains.server.services.TaskService;
 import com.geekbrains.server.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +23,9 @@ public class TaskController {
         Task task = new Task();
         task.setId(taskDTO.getId());
         task.setCaption(taskDTO.getCaption());
-        task.setOwner(taskDTO.getOwner() != -1 ? userService.getUserById(taskDTO.getOwner()) : null);
-        task.setAssigned(taskDTO.getAssigned() != -1 ? userService.getUserById(taskDTO.getAssigned()) : null);
-        task.setStatus(taskDTO.getStatus());
+        task.setOwner(taskDTO.getOwner() != null ? userService.getUserById(taskDTO.getOwner()) : null);
+        task.setAssigned(taskDTO.getAssigned() != null ? userService.getUserById(taskDTO.getAssigned()) : null);
+        task.setStatus(taskDTO.getStatus() != null ? taskDTO.getStatus() : Task.Status.CREATED);
         task.setDescription(taskDTO.getDescription());
 
         return task;
@@ -54,15 +53,10 @@ public class TaskController {
         taskService.deleteTask(id);
     }
 
-
-    @PostMapping("/tasks/put")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void updateTask(@ModelAttribute("task") TaskDTO taskDTO) {
-        taskService.addEdtTasks(parseDTO(taskDTO));
-    }
-
-    @PostMapping("/tasks/post")
-    public void addTask(@ModelAttribute("task") TaskDTO taskDTO) {
+    @PostMapping("/tasks")
+    public void addTask(@RequestBody TaskDTO taskDTO) {
+        System.out.println("!!!___" + "Owner: " + taskDTO.getOwner());
+        System.out.println("!!!___" + "Assigner: " + taskDTO.getAssigned());
         taskService.addEdtTasks(parseDTO(taskDTO));
     }
 }
